@@ -25,6 +25,7 @@ target_link_libraries(${DIR_NAME} PUBLIC
 
 add_dependencies(${DIR_NAME} ${PROJECT_NAME}::${DIR_NAME}Interface)
 
-if(ENABLE_TESTS)
+# Enclose unit test subdirectories within standard BUILD_TESTING checks
+if(BUILD_TESTING)
     add_subdirectory(${DIR_NAME}TEST)
 endif()

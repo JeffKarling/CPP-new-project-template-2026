@@ -28,7 +28,8 @@ if(ittnotify_FOUND)
     target_compile_definitions(${DIR_NAME} PRIVATE USE_ITT=1)
 endif()
 
-if(ENABLE_TESTS)
+# Enclose unit test subdirectories within standard BUILD_TESTING checks
+if(BUILD_TESTING)
     add_subdirectory(${DIR_NAME}TEST)
 endif()
 

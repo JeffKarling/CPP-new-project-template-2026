@@ -7,11 +7,10 @@ find_package(protobuf CONFIG GLOBAL REQUIRED ) #protobuf pkg-config package on f
 #pkg_check_modules(protobuf GLOBAL REQUIRED IMPORTED_TARGET protobuf)
 
 pkg_check_modules(tbb GLOBAL REQUIRED IMPORTED_TARGET tbb)
-pkg_check_modules(tbbmalloc GLOBAL REQUIRED IMPORTED_TARGET tbbmalloc)
-pkg_check_modules(mediainfo GLOBAL REQUIRED IMPORTED_TARGET libmediainfo)
 pkg_check_modules(ittnotify GLOBAL IMPORTED_TARGET ittnotify)
 
-if(ENABLE_TESTS)
+# Only retrieve testing dependencies if standard BUILD_TESTING is enabled
+if(BUILD_TESTING)
     #find_package(PkgConfig REQUIRED)
     pkg_check_modules(GTEST GLOBAL REQUIRED IMPORTED_TARGET gtest gtest_main)
 endif()

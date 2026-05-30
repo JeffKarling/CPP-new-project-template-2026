@@ -163,7 +163,7 @@ target_compile_definitions(${DIR_NAME} PRIVATE
 
 Wrap testing subdirectories inside conditional option checks to allow compiling production binaries without test dependencies:
 ```cmake
-if(ENABLE_TESTS)
+if(BUILD_TESTING)
     add_subdirectory(databaseManagerTEST)
 endif()
 ```

@@ -18,16 +18,19 @@ option(ENABLE_IPO "Enable Interprocedural Optimization (LTO) for Release builds"
 option(ENABLE_IWYU "Enable Include-What-You-Use analysis" OFF)
 option(ENABLE_CPPCHECK "Enable Cppcheck static analysis" OFF)
 
-set(ENABLE_TESTS ON)
-
+# Standard CTest integration.
+# Disable testing for sanitizers and static analysis (Tidy) to optimize build times.
 if(CMAKE_BUILD_TYPE MATCHES ".*San.*" OR CMAKE_BUILD_TYPE MATCHES ".*Tidy.*")
-    set(ENABLE_TESTS OFF)
+    set(BUILD_TESTING OFF CACHE BOOL "Build the testing tree." FORCE)
 endif()
+
+# include(CTest) automatically defines the standard BUILD_TESTING option (default ON)
+# and calls enable_testing() if BUILD_TESTING is enabled.
+include(CTest)
 
 add_subdirectory(Cmake)
 
-if(ENABLE_TESTS)
-    enable_testing()
+if(BUILD_TESTING)
     include(GoogleTest)
 endif()
 
