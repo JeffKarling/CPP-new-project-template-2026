@@ -26,7 +26,7 @@ The project has Cmake presets for all three above compilers. To execute a build 
 
 ## 2. Advanced Debugging & Profiling
 
-The system features robust profiling and debugging support integrated directly into CMake and CLion:
+The system features profiling and debugging support integrated directly into CMake and CLion:
 * **Deep Debug Profiles**: Custom configurations (`GNU_Custom_Debug_Deep` / `Clang_Custom_Debug_Deep`) using extensive standard-library safety containers and safe-iterators to catch silent memory bugs.
 * **Low-Noise VTune Tracking**: ITT API integration that isolates TBB Flow Graph execution, pausing database initialization and serialization overhead.
 * **One-Click Profiling Targets**: Custom targets (`Perf`, `Perf_record`, `Vtune_collect`, `Advisor_collect`) to run automated profiles and record reports inside `production_artifacts/profiling/`.
