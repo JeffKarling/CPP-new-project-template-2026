@@ -1,6 +1,6 @@
 cmake_path(GET CMAKE_CURRENT_LIST_DIR FILENAME DIR_NAME)
 
-add_library(${DIR_NAME})
+add_library(${DIR_NAME} STATIC)
 add_library(${PROJECT_NAME}::${DIR_NAME} ALIAS ${DIR_NAME})
 
 include(${CMAKE_BINARY_DIR}/targetProperties.cmake)
