@@ -27,6 +27,15 @@ This layout forces developers to translate between directory structures, include
 > **Core Architectural Philosophy**:
 > It physically prevents spaghetti code. Because you cannot use a class from another target without explicitly linking to it in CMake, compilation boundaries are ironclad. It forces developers to write modular, decoupled C++ code.
 
+#### Source File Boundaries and Private Helpers
+In this symmetrical design, it is architecturally acceptable to include multiple `.cpp` source files in a target if they constitute private helper implementations that:
+* Are only consumed internally within that specific target.
+* Are not referenced or linked directly by other targets.
+* Exist solely to maintain target source file modularity and structure.
+
+Criteria for isolating implementation details into a new target and directory:
+* If the implementation includes a class or function that other targets must reference or link against, the Symmetry Principle requires placing it in its own directory as a separate target. This enforces compilation boundaries and maintains a decoupled dependency graph.
+
 
 ### 2. Naming Refactoring (Automated Renaming)
 If an internal library needs to be renamed during active refactoring, standard projects require changing directory names, modifying target definitions, updating file references, editing parent inclusions, and updating every place where it is linked in the build graph.
@@ -36,15 +45,6 @@ In this symmetrical design, renaming a library is automated. Because of dynamic 
 ### 3. Centralized Target Templates
 Because all target properties and compilation options are uniform across the codebase, they are defined in a centralized location rather than duplicated inside individual library target files. This keeps targets DRY.
 
-### 4. Source File Boundaries and Private Helpers
-While CMake allows listing an arbitrary number of `.cpp` source files under a single target, the Symmetry Principle encourages keeping targets highly focused.
-
-* **One Primary Encapsulation Unit**: A standard target should represent a single primary interface, consisting of a single `.cpp` file (e.g., `foo.cpp`) and its corresponding header (e.g., `foo/foo.hpp`).
-* **Private Helper Exception**: It is acceptable to include additional `.cpp` files within a target if they represent private helper implementation details that:
-  1. Are only consumed internally by that specific target.
-  2. Are never referenced or linked by external targets.
-  3. Exist solely to prevent the main implementation file from growing overly large.
-* **Separation Rule**: If a class or helper function is intended to be shared, referenced, or linked by any other target in the project, it must be isolated and placed into its own directory as a separate target.
 
 ---
 
