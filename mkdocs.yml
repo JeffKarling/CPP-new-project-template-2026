@@ -7,6 +7,6 @@ theme:
   name: material
 
 nav:
-  - Home: Readme.md
+  - Home: index.md
   - Architecture & Strategy: project_documentation.md
   - Advanced Debugging & Profiling: profiling_guide.md
