@@ -65,4 +65,5 @@ This script automates the full configure, build, and test pipeline (using workfl
 >    - **Clean Session Startup Mandate**: When entering a clean new chat session, *before performing any user-requested tasks*, the AI agent MUST ask the user one time: *"Should I scan the project for refactoring tags?"*. If the user confirms, the agent MUST run the tag parser script: `python3 .agents/parse_tags.py`.
 >    - **Preferred Batch Workflow**: Combining several changes at once provides the agent with a larger, higher-fidelity context, leading to better code integration and significantly lower AI token consumption compared to small, piece-by-piece edits. This is the project's preferred workflow.
 > 5. AI agents MUST NEVER use icons or emojis in any markdown (.md) files throughout the codebase to maintain a clean, formal, and professional layout.
+> 6. AI agents MUST conduct all development, refactoring, and documentation modifications strictly on the branch named `next`. The agent must never commit directly to the `main` branch or perform push operations to GitHub, unless explicitly directed by the user.
 

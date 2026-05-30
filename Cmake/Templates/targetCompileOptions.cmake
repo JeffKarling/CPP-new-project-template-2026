@@ -41,7 +41,7 @@ target_compile_definitions(${DIR_NAME} PRIVATE
         #OneApi DPC++ compiler definitions
         $<$<CONFIG:OneApi_Debug>:>
         $<$<CONFIG:OneApi_Release>:NDEBUG>
-        $<$<CONFIG:OneApi_RelWithDebInfo>:TBB_USE_PROFILING_TOOLS=1>
+        $<$<CONFIG:OneApi_RelWithDebInfo>:>
 )
 
 target_compile_options(${DIR_NAME} PRIVATE
