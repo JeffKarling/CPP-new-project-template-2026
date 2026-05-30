@@ -1,0 +1,11 @@
+site_name: jeffK Documentation
+site_dir: site
+docs_dir: Documentation
+
+theme:
+  name: material
+
+nav:
+  - Home: Readme.md
+  - Architecture & Strategy: project_documentation.md
+  - Advanced Debugging & Profiling: profiling_guide.md

@@ -1,0 +1,16 @@
+# Ignore dynamically generated outputs
+Build/
+.idea/
+production_artifacts/profiling/
+
+# Ignore binary database outputs
+*.pb
+
+# Ignore binary media and assets
+*.mp4
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.zip
+*.tar.gz
