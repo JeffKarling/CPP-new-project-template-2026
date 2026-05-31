@@ -28,4 +28,4 @@ target_sources(${DIR_NAME}
         FILES ${CMAKE_CURRENT_BINARY_DIR}/${DIR_NAME}/itemDatabase.pb.h
 )
 
-target_link_libraries(${DIR_NAME} protobuf::libprotobuf)
+target_link_libraries(${DIR_NAME} PUBLIC protobuf::libprotobuf)

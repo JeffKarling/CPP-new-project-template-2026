@@ -34,6 +34,11 @@ Inside [tbbAlgos.cpp](../srcTargets/tbbAlgos/tbbAlgos.cpp):
 2. **Hot-Path Focus:** Right before activating the TBB Flow Graph, we register a custom ITT domain (`TbbScannerDomain`) and a custom task (`ParallelScanAndExtract`). We trigger `__itt_frame_begin_v3()`, `__itt_task_begin()`, and then **`__itt_resume()`** to start data collection.
 3. **Immediate Post-Pause:** As soon as `g.wait_for_all()` finishes, we call `__itt_pause()` again to ignore database flushing and serialization.
 
+### CMake Configuration (`ENABLE_ITT`):
+To prevent unnecessary linking of the ITT API in standard production or debug builds, the ITT instrumentation is optional and managed by the `ENABLE_ITT` CMake option (default `OFF`):
+* **Automatic Integration:** The `OneApi_Custom_RelWithDebInfo` profiling preset automatically configures `"ENABLE_ITT": "ON"`, meaning the low-noise ITT API instrumentation works out of the box with zero manual setup when using this preset.
+* **Manual Control:** You can explicitly toggle ITT instrumentation in any build configuration by setting `-DENABLE_ITT=ON` or `-DENABLE_ITT=OFF` via your IDE or the command line.
+
 ### Running with Paused Collection:
 To leverage this low-noise instrumentation, you must start the VTune analysis with data collection paused:
 * **VTune GUI:** Under the target configuration, check the **"Start with data collection paused"** box.

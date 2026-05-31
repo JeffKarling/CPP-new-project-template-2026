@@ -13,7 +13,9 @@ if(TARGET PkgConfig::tbb)
     )
 endif()
 
-pkg_check_modules(ittnotify GLOBAL IMPORTED_TARGET ittnotify)
+if(ENABLE_ITT)
+    pkg_check_modules(ittnotify GLOBAL IMPORTED_TARGET ittnotify)
+endif()
 
 # Only retrieve testing dependencies if standard BUILD_TESTING is enabled
 if(BUILD_TESTING)
