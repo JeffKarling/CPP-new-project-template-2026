@@ -7,11 +7,13 @@ set(DIR_NAME template2026)
 #set(CMAKE_CXX_MODULE_STD 1)
 
 project(${DIR_NAME}
-        VERSION 1.1.2
+        VERSION 1.2.0
         DESCRIPTION "${PROJECT_NAME} is a opinionated personal C+++ project template"
         HOMEPAGE_URL "https://github.com/JeffKarling/CPP-new-project-template-2026"
         LANGUAGES CXX
 )
+
+set(PROJECT_LICENSE "MIT-0")
 
 option(ENABLE_WARNING_AS_ERROR "Enable warning as errors for Debug builds" OFF)
 option(ENABLE_IPO "Enable Interprocedural Optimization (LTO) for Release builds" ON)
