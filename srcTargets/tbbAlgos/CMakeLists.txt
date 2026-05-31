@@ -17,13 +17,12 @@ target_sources(${DIR_NAME}
         ${DIR_NAME}/${DIR_NAME}.hpp
 )
 
-target_link_libraries(${DIR_NAME}
-        PUBLIC 
+target_link_libraries(${DIR_NAME} PRIVATE
         PkgConfig::tbb 
 )
 
 # Link Intel ITT API for JIT profiling if found
-if(ittnotify_FOUND)
+if(ENABLE_ITT AND ittnotify_FOUND)
     target_link_libraries(${DIR_NAME} PRIVATE PkgConfig::ittnotify)
     target_compile_definitions(${DIR_NAME} PRIVATE USE_ITT=1)
 endif()

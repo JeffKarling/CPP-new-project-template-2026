@@ -327,7 +327,8 @@
       "displayName": "OneApi Custom RelWithDebInfo",
       "description": "Custom RelWithDebInfo build type using Ninja generator",
       "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "OneApi_RelWithDebInfo"
+        "CMAKE_BUILD_TYPE": "OneApi_RelWithDebInfo",
+        "ENABLE_ITT": "ON"
       }
     }
   ],

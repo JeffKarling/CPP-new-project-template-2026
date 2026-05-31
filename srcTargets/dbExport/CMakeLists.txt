@@ -18,6 +18,6 @@ target_sources(${DIR_NAME}
 )
 
 target_link_libraries(${DIR_NAME}
-        PUBLIC
+        PRIVATE
         ${PROJECT_NAME}::databaseManagerInterface
 )
