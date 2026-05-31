@@ -7,7 +7,7 @@ set(DIR_NAME template2026)
 #set(CMAKE_CXX_MODULE_STD 1)
 
 project(${DIR_NAME}
-        VERSION 1.1.1
+        VERSION 1.1.2
         DESCRIPTION "${PROJECT_NAME} is a opinionated personal C+++ project template"
         HOMEPAGE_URL "https://github.com/JeffKarling/CPP-new-project-template-2026"
         LANGUAGES CXX
@@ -19,14 +19,18 @@ option(ENABLE_IWYU "Enable Include-What-You-Use analysis" OFF)
 option(ENABLE_CPPCHECK "Enable Cppcheck static analysis" OFF)
 
 # Standard CTest integration.
+# Define the standard BUILD_TESTING option manually (default ON) to avoid CDash target clutter.
+option(BUILD_TESTING "Build the testing tree." ON)
+
 # Disable testing for sanitizers and static analysis (Tidy) to optimize build times.
 if(CMAKE_BUILD_TYPE MATCHES ".*San.*" OR CMAKE_BUILD_TYPE MATCHES ".*Tidy.*")
     set(BUILD_TESTING OFF CACHE BOOL "Build the testing tree." FORCE)
 endif()
 
-# include(CTest) automatically defines the standard BUILD_TESTING option (default ON)
-# and calls enable_testing() if BUILD_TESTING is enabled.
-include(CTest)
+# Enable testing directly at the directory level if BUILD_TESTING is enabled.
+if(BUILD_TESTING)
+    enable_testing()
+endif()
 
 add_subdirectory(Cmake)
 
