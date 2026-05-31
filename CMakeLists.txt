@@ -13,6 +13,8 @@ project(${DIR_NAME}
         LANGUAGES CXX
 )
 
+set(PROJECT_LICENSE "MIT-0")
+
 option(ENABLE_WARNING_AS_ERROR "Enable warning as errors for Debug builds" OFF)
 option(ENABLE_IPO "Enable Interprocedural Optimization (LTO) for Release builds" ON)
 option(ENABLE_IWYU "Enable Include-What-You-Use analysis" OFF)
