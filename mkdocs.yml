@@ -15,3 +15,12 @@ nav:
   - Static Analysis & Clang-Tidy: static_analysis_workflows.md
   - Multi-Compiler Verification Pipeline: production_artifacts.md
   - Multi-Compiler Debugging & Profiling: profiling_guide.md
+
+markdown_extensions:
+  - pymdownx.arithmatex:
+      generic: true
+
+extra_javascript:
+  - javascripts/mathjax.js
+  - https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/tex-mml-chtml.js
+
