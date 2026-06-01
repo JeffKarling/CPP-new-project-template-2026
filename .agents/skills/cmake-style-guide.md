@@ -213,7 +213,7 @@ By compiling and testing across both preset classes, developers ensure that loca
 To simplify multi-compiler testing, the project integrates CMake **Workflow Presets** (available in CMake 3.25+) alongside a unified helper script.
 
 ### CMake Workflow Presets
-A workflow preset chains the entire lifecycle together in a single non-serial invocation: **Configure ➡️ Build ➡️ Test (CTest)**.
+A workflow preset chains the entire lifecycle together in a single non-serial invocation: **Configure -> Build -> Test (CTest)**.
 
 To trigger full compilation and GTest suite validation under a command:
 ```bash
