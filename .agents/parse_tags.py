@@ -12,9 +12,9 @@ def main():
     ]
     roadmap_path = os.path.join(agent_dir, 'refactoring_roadmap.md')
 
-    print("🚀 Running Agentic Comment Tag Parser...")
-    print(f"📁 Scan Directories: {', '.join(scan_dirs)}")
-    print(f"📄 Target Roadmap: {roadmap_path}")
+    print("Running Agentic Comment Tag Parser...")
+    print(f"Scan Directories: {', '.join(scan_dirs)}")
+    print(f"Target Roadmap: {roadmap_path}")
 
     # Regex patterns for C++ style tags
     cpp_atr_pattern = re.compile(r'//\s*ATR:\s*(.*)')
@@ -73,7 +73,7 @@ def main():
                                             'line': line_num
                                         })
                     except Exception as e:
-                        print(f"⚠️ Error reading {file_path}: {e}")
+                        print(f"Error reading {file_path}: {e}")
 
     # Format the collected items
     atr_md = []
@@ -94,7 +94,7 @@ def main():
 
     # Read and update refactoring_roadmap.md
     if not os.path.exists(roadmap_path):
-        print(f"❌ Error: Roadmap file does not exist at {roadmap_path}")
+        print(f"Error: Roadmap file does not exist at {roadmap_path}")
         return
 
     with open(roadmap_path, 'r', encoding='utf-8') as f:
@@ -119,10 +119,10 @@ def main():
     with open(roadmap_path, 'w', encoding='utf-8') as f:
         f.write(content)
 
-    print("\n📊 Scan Summary:")
-    print(f"  ✨ Found {len(atr_tasks)} inline tasks (//ATR)")
-    print(f"  ✨ Found {len(dis_queries)} inline discussions (//DIS)")
-    print("✅ Roadmap updated successfully.")
+    print("\nScan Summary:")
+    print(f"  Found {len(atr_tasks)} inline tasks (//ATR)")
+    print(f"  Found {len(dis_queries)} inline discussions (//DIS)")
+    print("Roadmap updated successfully.")
 
 if __name__ == '__main__':
     main()

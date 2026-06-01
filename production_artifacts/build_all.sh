@@ -41,25 +41,25 @@ run_workflow() {
     local ignore_errors=${2:-false}
     
     echo -e "\n-------------------------------------------------------------"
-    echo "⚙️  Executing Workflow: $preset"
+    echo "Executing Workflow: $preset"
     echo "-------------------------------------------------------------"
     
     if cmake --workflow --preset "$preset"; then
-        echo -e "✅ [SUCCESS] Workflow $preset completed successfully."
+        echo -e "[SUCCESS] Workflow $preset completed successfully."
         return 0
     else
         if [ "$ignore_errors" = "true" ]; then
-            echo -e "\n⚠️  [WARNING] Workflow $preset failed, ignoring as expected."
+            echo -e "\n[WARNING] Workflow $preset failed, ignoring as expected."
             return 0
         else
-            echo -e "\n❌ [ERROR] Workflow $preset failed."
+            echo -e "\n[ERROR] Workflow $preset failed."
             return 1
         fi
     fi
 }
 
 echo "================================================================="
-echo "  🚀 Starting Verification ($P_TYPE - $P_MODE): GNU -> oneAPI -> Clang"
+echo "  Starting Verification ($P_TYPE - $P_MODE): GNU -> oneAPI -> Clang"
 echo "================================================================="
 
 # 1. Run GNU Verification Workflow
@@ -69,12 +69,12 @@ run_workflow "GNU_${P_TYPE}_${P_MODE}_Verify" false
 if [ "$P_MODE" != "Debug_Deep" ]; then
     run_workflow "OneApi_${P_TYPE}_${P_MODE}_Verify" false
 else
-    echo -e "\n⚠️  [INFO] Skipping oneAPI Verification Workflow (not defined for Deep Debug)."
+    echo -e "\n[INFO] Skipping oneAPI Verification Workflow (not defined for Deep Debug)."
 fi
 
 # 3. Run Clang Verification Workflow (Gracefully handle ABI link failure in Clang)
 run_workflow "Clang_${P_TYPE}_${P_MODE}_Verify" true
 
 echo -e "\n================================================================="
-echo "  ✅ All Compiler Verification Workflows Processed Successfully! "
+echo "  All Compiler Verification Workflows Processed Successfully! "
 echo "================================================================="
