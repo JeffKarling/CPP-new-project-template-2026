@@ -1,4 +1,4 @@
-# Advanced Debugging & Profiling Guide
+# Multi-Compiler Debugging & Profiling Guide
 
 This guide details how to use the built-in compiler configurations, command-line profiling targets, and Intel ITT instrumentation to debug, profile, and optimize the `template2026` database scanning engine.
 
