@@ -12,7 +12,7 @@ Deep Debug diagnostics address this by compiling standard library containers wit
 
 ---
 
-## 2. GNU (GCC) safe-iterator and Pedantic Checks
+## 2. GNU, GCC safe-iterator and Pedantic Checks
 
 Under GCC, compiling in deep debug mode activates the standard library’s defensive debugging instrumentation (`_GLIBCXX_DEBUG` and `_GLIBCXX_DEBUG_PEDANTIC` macro definitions).
 
@@ -23,7 +23,7 @@ Under GCC, compiling in deep debug mode activates the standard library’s defen
 
 ---
 
-## 3. Clang (LLVM) Hardened libc++ Assertions
+## 3. Clang, LLVM Hardened libc++ Assertions
 
 Under Clang, standard library diagnostics are managed through LLVM’s modern, layout-neutral `libc++` hardening modes, utilizing the maximum check preset (`_LIBCPP_HARDENING_MODE_EXTENSIVE`).
 

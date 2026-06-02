@@ -1,4 +1,4 @@
-# AI Agent Workspace (`.agents/`)
+# AI Agent Workspace, `.agents/`
 
 This directory is the dedicated space for AI agent metadata, planning blueprints, and developer-agent integration utilities. Maintaining this workspace folder prevents polluting the root project directory and ensures that the agent always has access to the design blueprints of the codebase.
 
@@ -14,7 +14,7 @@ This directory is the dedicated space for AI agent metadata, planning blueprints
 
 Developers and AI agents can inject dynamic tasks and architectural queries directly from code editors (like CLion) using standard inline comment formats:
 
-### Add to Refactor (`//ATR:`)
+### Add to Refactor, `//ATR:`
 Use this tag to flag technical debt, upcoming features, or code quality improvements.
 * **Syntax**: `//ATR: <description>`
 * **Example**:
@@ -22,7 +22,7 @@ Use this tag to flag technical debt, upcoming features, or code quality improvem
   //ATR: Migrate AsyncDatabaseUpdater to use parallel function_node instead of detaching threads.
   ```
 
-### Design Discussions (`//DIS:`)
+### Design Discussions, `//DIS:`
 Use this tag to raise architectural questions or request expert opinions during code design reviews.
 * **Syntax**: `//DIS: <description>`
 * **Example**:
@@ -40,7 +40,7 @@ Run it directly from the project root directory:
 ```bash
 python3 .agents/parse_tags.py
 ```
-## Multi-Compiler Verification (`production_artifacts/build_all.sh`)
+## Multi-Compiler Verification, `production_artifacts/build_all.sh`
 
 Due to CMake limitations, a single workflow preset can only execute compilation and test steps using a single configure preset (i.e. one specific compiler toolchain). 
 
@@ -66,4 +66,5 @@ This script automates the full configure, build, and test pipeline (using workfl
 >    - **Preferred Batch Workflow**: Combining several changes at once provides the agent with a larger, higher-fidelity context, leading to better code integration and significantly lower AI token consumption compared to small, piece-by-piece edits. This is the project's preferred workflow.
 > 5. AI agents MUST NEVER use icons or emojis in any markdown (.md) files throughout the codebase to maintain a clean, formal, and professional layout.
 > 6. AI agents MUST conduct all development, refactoring, and documentation modifications strictly on the branch named `next`. The agent must never commit directly to the `main` branch or perform push operations to GitHub, unless explicitly directed by the user. The `next` branch must always contain a version bump. When adding changes to `next`, the agent MUST check if the `next` branch already contains a version bump; if not, the agent must remind the user of a version bump change.
+> 7. AI agents MUST NEVER use parentheses in markdown headers across the documentation suite. A comma separator MUST be used instead (e.g., use `Compilation Strategy, Default vs. Custom Build Types` instead of `Compilation Strategy (Default vs. Custom Build Types)`).
 

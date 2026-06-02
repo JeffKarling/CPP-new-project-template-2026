@@ -8,7 +8,7 @@ This guide details how to use the built-in compiler configurations, command-line
 
 The project provides two distinct levels of debugging targets inside CMake and CLion:
 
-### A. Standard Debug (`GNU_Custom_Debug` / `Clang_Custom_Debug`)
+### A. Standard Debug, `GNU_Custom_Debug` / `Clang_Custom_Debug`
 * **Optimization:** `-O1` (enables minor optimizations for basic performance while maintaining complete debug symbols).
 * **Diagnostics:** 
   * Uses modern DWARF v5 (`-gdwarf-5`) debug formats.
@@ -16,7 +16,7 @@ The project provides two distinct levels of debugging targets inside CMake and C
   * **Clang:** Enables standard `libc++` debugging assertions via `_LIBCPP_HARDENING_MODE_DEBUG`.
   * **GCC:** Enables standard library safety checks via `_GLIBCXX_DEBUG`.
 
-### B. Deep Debug (`GNU_Custom_Debug_Deep` / `Clang_Custom_Debug_Deep`)
+### B. Deep Debug, `GNU_Custom_Debug_Deep` / `Clang_Custom_Debug_Deep`
 * **Optimization:** `-O0` (disabled optimization completely for GCC; `-O1` for Clang to resolve Abseil link-time compatibility).
 * **Diagnostics (Exhaustive):**
   * **Clang:** Upgraded to the maximum extensive hardening mode: `_LIBCPP_HARDENING_MODE_EXTENSIVE`. Performs exhaustive, heavier runtime STL assertions.
@@ -25,7 +25,7 @@ The project provides two distinct levels of debugging targets inside CMake and C
 
 ---
 
-## 2. Hot-Path Isolation & Low-Noise Profiling (Intel ITT API)
+## 2. Hot-Path Isolation & Low-Noise Profiling, Intel ITT API
 
 Standard profiling runs collect execution data over the entire lifecycle of a binary. In C++ projects, this introduces significant profiling noise from:
 * Google Test harness setup and test suite registration.
@@ -101,7 +101,7 @@ void TbbAlgos::parallel_double(std::vector<int>& numbers) noexcept {
 }
 ```
 
-### CMake Configuration (`ENABLE_ITT`)
+### CMake Configuration, `ENABLE_ITT`
 Linking against the ITT API is optional and managed by the CMake compilation parameter `ENABLE_ITT`:
 * **Development Profiling**: The `OneApi_Custom_RelWithDebInfo` compilation preset automatically sets `"ENABLE_ITT": "ON"`. This enables the ITT control macros during compilations without requiring manual configuration.
 * **Standard Production**: In normal release and distribution builds, `ENABLE_ITT` defaults to `OFF`. The ITT macro calls compile into empty statements, removing any linkage requirements or execution overhead.
@@ -153,7 +153,7 @@ The project provides two custom CMake targets for VTune:
 
 ---
 
-### C. Transient Systemd User Service Workflow (Dynamic Background Server)
+### C. Transient Systemd User Service Workflow, Dynamic Background Server
 
 To avoid keeping a manual CLion target session blocking or polluting the disk with static, hardcoded configuration files (like a static `.service` unit file), the VTune web backend is launched as a **transient Systemd user service** using `systemd-run`.
 

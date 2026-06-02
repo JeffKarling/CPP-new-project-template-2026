@@ -88,7 +88,7 @@ If a developer reviews `clang_tidy_state.md` and decides a Category B or C warni
 
 ---
 
-## 5. Dependency Minimization (Include-What-You-Use)
+## 5. Dependency Minimization, Include-What-You-Use
 
 To prevent compile-time degradation and keep target configurations clean, the build system integrates **Include-What-You-Use (IWYU)** analysis. 
 

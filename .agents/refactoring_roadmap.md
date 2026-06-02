@@ -7,7 +7,7 @@ This document acts as the persistent blueprint for refactoring the data structur
 
 *All major architectural roadmap items have been fully refactored, verified, and completed!*
 
-### Codebase Inline Tasks (//ATR)
+### Codebase Inline Tasks, //ATR
 
 <!-- START_AUTO_ATR -->
 *No inline tasks currently found.*
@@ -17,7 +17,7 @@ This document acts as the persistent blueprint for refactoring the data structur
 
 ## Design Discussions
 
-### Codebase Inline Queries (//DIS)
+### Codebase Inline Queries, //DIS
 <!-- START_AUTO_DIS -->
 *No inline design discussions currently found.*
 <!-- END_AUTO_DIS -->

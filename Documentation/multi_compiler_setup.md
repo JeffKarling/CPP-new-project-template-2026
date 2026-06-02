@@ -4,7 +4,7 @@ This guide details how to build, run, and verify the `template2026` codebase acr
 
 ---
 
-## 1. Technical Architecture (The How)
+## 1. Technical Architecture, The How
 
 To make multi-compiler builds frictionless, the template provides a two-layered automation structure:
 
@@ -22,18 +22,18 @@ In professional C++ projects, developers must verify code changes across multipl
 
 ---
 
-## 2. Compilation Strategy (Default vs. Custom Build Types)
+## 2. Compilation Strategy, Default vs. Custom Build Types
 
 The build presets inside `CMakePresets.json` are divided into two primary categories to balance portable distribution with optimal local performance:
 
-### A. Default Presets (System-Neutral)
+### A. Default Presets, System-Neutral
 Designed for distribution, package maintainers, and general users:
 
 * **Optimization**: Standard compiler optimization flags (e.g., `-O2` or `-O3`) without CPU-specific extensions.
 * **Compatibility**: Guarantees system-neutral binaries that run across any x86-64 target architecture.
 * **Usage**: Ideal for continuous integration (CI) servers and releasing portable binary archives.
 
-### B. Custom Presets (Machine-Tuned)
+### B. Custom Presets, Machine-Tuned
 Designed for local active development and high-performance profiling:
 
 * **Optimization**: Includes `-march=native` (or compiler-specific equivalents) to utilize all instruction sets available on your local CPU (such as AVX-512, FMA, and BMI).
