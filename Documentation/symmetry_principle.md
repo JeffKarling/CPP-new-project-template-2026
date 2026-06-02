@@ -1,16 +1,18 @@
 # Symmetry Principle Architecture
 
-The `template2026` build system implements a architectural rule named the **Symmetry Principle**. This constraint enforces a matching relationship across the project structure:
-
-$$\text{Directory Name} == \text{Target Name} == \text{Translation Unit File Name} == \text{Library Object Name}$$
+This guide details the concrete implementation, template configurations, and refactoring guidelines that enforce the **Symmetry Principle** across the `template2026` codebase.
 
 ---
 
 ## 1. Architectural Motivation
 
-In C++ codebases, developers often face naming discrepancies where a subdirectory is named `utils/`, the CMake library target is `utility_lib`, the source file is `helper.cpp`, and the exported namespace target is `my_project::common`. 
+In standard C++ codebases, a common source of cognitive friction is naming discrepancy. For example, a subdirectory might be named `utils/`, while its CMake library target is registered as `utility_lib`, the primary source file is named `helper.cpp`, and the exported namespace target is `my_project::common`. 
 
-This variation introduces naming translations that developers must track mentally. The Symmetry Principle removes this translation overhead: knowing a folder is named `foo` guarantees that:
+This variation introduces a naming translation overhead that developers must track mentally. The Symmetry Principle removes this translation by establishing a strict, identical relationship across the project structure:
+
+$$\text{Directory Name} == \text{Target Name} == \text{Translation Unit File Name} == \text{Library Object Name}$$
+
+Knowing a folder is named `foo` guarantees that:
 * The library target is `foo`.
 * The main source implementation file is `foo.cpp`.
 * The public header file path is `foo/foo.hpp`.
