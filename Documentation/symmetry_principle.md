@@ -13,6 +13,7 @@ This variation introduces a naming translation overhead that developers must tra
 $$\text{Directory Name} == \text{Target Name} == \text{Translation Unit File Name} == \text{Library Object Name}$$
 
 Knowing a folder is named `foo` guarantees that:
+
 * The library target is `foo`.
 * The main source implementation file is `foo.cpp`.
 * The public header file path is `foo/foo.hpp`.
@@ -31,6 +32,27 @@ While the Symmetry Principle maps one directory to one target, it is architectur
 * **Internal Isolation**: The helper files are only used internally inside that specific target.
 * **Encapsulation**: The code within these files is never referenced, seen, or linked directly by other targets.
 * **Readability**: They exist solely to keep the target's main `.cpp` source file clean, readable, and structured.
+
+#### Concrete Case Study: Private Helpers in `databaseManager`
+
+To demonstrate this exception, the template includes a private helper within the [databaseManager](file:///home/ello/CLionProjects/template2026/srcTargets/databaseManager) target. The file I/O safety and path validation checks are isolated into dedicated private files directly within the target's folder, completely separate from the main public interfaces:
+
+1. **Private Helper Header ([databaseHelper.hpp](file:///home/ello/CLionProjects/template2026/srcTargets/databaseManager/databaseHelper.hpp))**: Contains validation declarations used exclusively within the `databaseManager` library. Because it lives in the root of the target directory and **not** inside the nested `databaseManager/` public headers directory, it is never exposed in the target's public `FILE_SET` and cannot be included by external modules.
+2. **Private Implementation ([databaseHelper.cpp](file:///home/ello/CLionProjects/template2026/srcTargets/databaseManager/databaseHelper.cpp))**: Implements the internal platform validations.
+3. **Private Source Registration ([CMakeLists.txt](file:///home/ello/CLionProjects/template2026/srcTargets/databaseManager/CMakeLists.txt))**: Registered strictly as a `PRIVATE` source within `target_sources(...)`:
+   ```cmake
+   target_sources(${DIR_NAME}
+           PRIVATE
+           ${DIR_NAME}.cpp
+           databaseHelper.cpp
+
+           PUBLIC
+           FILE_SET ${DIR_NAME}
+           TYPE HEADERS
+           FILES
+           ${DIR_NAME}/${DIR_NAME}.hpp
+   )
+   ```
 
 ### Criteria for Target Splitting
 

@@ -11,6 +11,7 @@ include(${CMAKE_BINARY_DIR}/targetCompileOptions.cmake)
 target_sources(${DIR_NAME}
         PRIVATE
         ${DIR_NAME}.cpp
+        databaseHelper.cpp
 
         PUBLIC
         FILE_SET ${DIR_NAME}
