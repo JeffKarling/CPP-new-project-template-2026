@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE file in the project root for details.
 
 #include <databaseManager/databaseManager.hpp>
+#include "databaseHelper.hpp"
 #include <fstream>
 #include <iostream>
 #include <iterator>
@@ -43,7 +44,8 @@ namespace template2026 {
     }
 
     [[nodiscard]] auto DatabaseManager::save_to(const std::filesystem::path& path) const noexcept -> bool {
-        if (path.empty()) {
+        if (!detail::is_writable_path(path)) {
+            std::cerr << "[DATABASE ERROR] Destination path is not writable: " << path.string() << "\n";
             return false;
         }
         
@@ -60,8 +62,9 @@ namespace template2026 {
     }
 
     [[nodiscard]] auto DatabaseManager::load() noexcept -> bool {
-        if (_dbPath.empty()) {
-            return false;
+        if (!detail::file_exists_and_is_readable(_dbPath)) {
+            _database.Clear();
+            return true;
         }
         
         std::ifstream input(_dbPath.string(), std::ios::in | std::ios::binary);
