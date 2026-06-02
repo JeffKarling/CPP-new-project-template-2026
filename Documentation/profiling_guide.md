@@ -25,24 +25,91 @@ The project provides two distinct levels of debugging targets inside CMake and C
 
 ---
 
-## 2. Low-Noise Profiling with VTune ITT API
+## 2. Hot-Path Isolation & Low-Noise Profiling (Intel ITT API)
 
-To eliminate compiler setup, Google Test runner overhead, and JSON/Protobuf file serialization noise, the TBB parallel scanning engine is instrumented with the **Intel Instrumentation and Tracing Technology (ITT) API**.
+Standard profiling runs collect execution data over the entire lifecycle of a binary. In C++ projects, this introduces significant profiling noise from:
+* Google Test harness setup and test suite registration.
+* Configurations, environment variable checking, and file-system directory walking.
+* JSON or Google Protobuf file parsing and initialization.
 
-Inside [tbbAlgos.cpp](../srcTargets/tbbAlgos/tbbAlgos.cpp):
-1. **Immediate Pause:** On entering the scanning method, VTune collection is explicitly paused (`__itt_pause()`), ignoring all configuration parsing and file-walking setups.
-2. **Hot-Path Focus:** Right before activating the TBB Flow Graph, we register a custom ITT domain (`TbbScannerDomain`) and a custom task (`ParallelScanAndExtract`). We trigger `__itt_frame_begin_v3()`, `__itt_task_begin()`, and then **`__itt_resume()`** to start data collection.
-3. **Immediate Post-Pause:** As soon as `g.wait_for_all()` finishes, we call `__itt_pause()` again to ignore database flushing and serialization.
+To eliminate this noise and isolate performance tracking directly to the performance-critical parallel algorithm block, the project uses the **Intel Instrumentation and Tracing Technology (ITT) API**.
 
-### CMake Configuration (`ENABLE_ITT`):
-To prevent unnecessary linking of the ITT API in standard production or debug builds, the ITT instrumentation is optional and managed by the `ENABLE_ITT` CMake option (default `OFF`):
-* **Automatic Integration:** The `OneApi_Custom_RelWithDebInfo` profiling preset automatically configures `"ENABLE_ITT": "ON"`, meaning the low-noise ITT API instrumentation works out of the box with zero manual setup when using this preset.
-* **Manual Control:** You can explicitly toggle ITT instrumentation in any build configuration by setting `-DENABLE_ITT=ON` or `-DENABLE_ITT=OFF` via your IDE or the command line.
+### Conceptual Instrumentation Pattern
+By explicitly pausing data collection at entry and exit, performance reports display execution metrics (e.g., active execution time, cache misses, vectorization rates, and thread load balancing) exclusively for the hot-path, completely free of initialization and teardown overhead:
 
-### Running with Paused Collection:
+```cpp
+#include <ittnotify.h>
+
+// 1. Instantly pause collection on entering the method to ignore setup overhead
+__itt_pause();
+
+// 2. Perform file setup, configuration parsing, and memory allocations
+initialize_environment();
+
+// 3. Define a custom ITT domain and task descriptor for the hot-path
+__itt_domain* domain = __itt_domain_create("ParallelScannerDomain");
+__itt_string_handle* task_handle = __itt_string_handle_create("ParallelScanAndExtract");
+
+// 4. Signal the start of the execution frame and resume profiling collection
+__itt_frame_begin_v3(domain, nullptr);
+__itt_task_begin(domain, __itt_null, __itt_null, task_handle);
+__itt_resume();
+
+// 5. Execute the performance-critical parallel algorithm (TBB Flow Graph)
+execute_parallel_algorithm();
+
+// 6. Immediately pause collection as soon as the parallel work completes
+__itt_pause();
+__itt_task_end(domain);
+__itt_frame_end_v3(domain, nullptr);
+
+// 7. Execute disk flushes, database serialization, and cleanup actions
+serialize_results_to_disk();
+```
+
+### Real-World Implementation
+Inside our TBB parallel algorithm module (`srcTargets/tbbAlgos/tbbAlgos.cpp`), this is managed via preprocessor directives to ensure zero production overhead:
+
+```cpp
+void TbbAlgos::parallel_double(std::vector<int>& numbers) noexcept {
+#ifdef USE_ITT
+    // Create an ITT domain and string handle for the parallel workload
+    static __itt_domain* domain = __itt_domain_create("TbbAlgosDomain");
+    static __itt_string_handle* sh_double = __itt_string_handle_create("ParallelDoubleWorkload");
+
+    // Start the ITT frame and task, then resume data collection
+    __itt_frame_begin_v3(domain, nullptr);
+    __itt_task_begin(domain, __itt_null, __itt_null, sh_double);
+    __itt_resume();
+#endif
+
+    oneapi::tbb::parallel_for_each(numbers.begin(), numbers.end(), [](int& n) noexcept {
+        // CPU-intensive workload
+        volatile double result = 0.0;
+        for (int i = 0; i < 20'000'000; ++i) {
+            result = result + std::sin(static_cast<double>(i * n)) * std::cos(static_cast<double>(i + n));
+        }
+        n = n * 2;
+    });
+
+#ifdef USE_ITT
+    // Pause data collection immediately after hot-path completion
+    __itt_pause();
+    __itt_task_end(domain);
+    __itt_frame_end_v3(domain, nullptr);
+#endif
+}
+```
+
+### CMake Configuration (`ENABLE_ITT`)
+Linking against the ITT API is optional and managed by the CMake compilation parameter `ENABLE_ITT`:
+* **Development Profiling**: The `OneApi_Custom_RelWithDebInfo` compilation preset automatically sets `"ENABLE_ITT": "ON"`. This enables the ITT control macros during compilations without requiring manual configuration.
+* **Standard Production**: In normal release and distribution builds, `ENABLE_ITT` defaults to `OFF`. The ITT macro calls compile into empty statements, removing any linkage requirements or execution overhead.
+
+### Running with Paused Collection
 To leverage this low-noise instrumentation, you must start the VTune analysis with data collection paused:
-* **VTune GUI:** Under the target configuration, check the **"Start with data collection paused"** box.
-* **VTune CLI:** Add the `-start-paused` flag:
+* **VTune GUI**: Under the target configuration, check the **"Start with data collection paused"** box.
+* **VTune CLI**: Add the `-start-paused` flag:
   ```bash
   vtune -collect threading -start-paused -- ./Build/OneApi_Custom_RelWithDebInfo/srcTargets/exeMain/template2026 targets.txt
   ```
