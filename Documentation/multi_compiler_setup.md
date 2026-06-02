@@ -7,6 +7,7 @@ This guide details how to build, run, and verify the `template2026` codebase acr
 ## 1. Technical Architecture (The How)
 
 To make multi-compiler builds frictionless, the template provides a two-layered automation structure:
+
 1. **CMake Workflow Presets (`CMakePresets.json`)**: Configures, builds, and runs the test harness (`ctest`) as a single, unified pipeline step for a specific toolchain.
 2. **Verification Runner Script (`production_artifacts/build_all.sh`)**: A bash script that orchestrates the execution of these workflow presets across all three supported compilers.
 
@@ -14,6 +15,7 @@ To make multi-compiler builds frictionless, the template provides a two-layered 
 While CMake 3.25+ Workflow Presets allow chaining steps (Configure -> Build -> Test), **CMake restricts a single workflow preset to a single active toolchain configuration**. 
 
 In professional C++ projects, developers must verify code changes across multiple distinct compiler suites (GNU, Clang, oneAPI) to catch compiler-specific quirks, linker behaviors, and standard library differences. Because CMake cannot natively execute a sequence of workflow presets that span different compilers, the wrapper script (`build_all.sh`) is used. It:
+
 * Manages path environments and overrides.
 * Runs verification workflows sequentially.
 * Gracefully handles expected quirks (such as Clang ABI link issues with static libraries when using certain standard library configurations).
@@ -26,12 +28,14 @@ The build presets inside `CMakePresets.json` are divided into two primary catego
 
 ### A. Default Presets (System-Neutral)
 Designed for distribution, package maintainers, and general users:
+
 * **Optimization**: Standard compiler optimization flags (e.g., `-O2` or `-O3`) without CPU-specific extensions.
 * **Compatibility**: Guarantees system-neutral binaries that run across any x86-64 target architecture.
 * **Usage**: Ideal for continuous integration (CI) servers and releasing portable binary archives.
 
 ### B. Custom Presets (Machine-Tuned)
 Designed for local active development and high-performance profiling:
+
 * **Optimization**: Includes `-march=native` (or compiler-specific equivalents) to utilize all instruction sets available on your local CPU (such as AVX-512, FMA, and BMI).
 * **Profiling Support**: Integrates debug symbols (`-g`) alongside optimizations and enables optional features like the Intel ITT API for low-noise profiling.
 * **Usage**: Used during local hot-path micro-benchmarking, VTune analysis, and loop vectorization studies.
@@ -76,6 +80,7 @@ cmake --workflow --preset OneApi_Custom_RelWithDebInfo_Verify
 ## 4. Compiler Integration & Behavior
 
 The script sequentially invokes the following compiler frontends:
+
 1. **GNU Compiler Collection (`g++`)**: Acts as the baseline validator. Runs first to ensure standard conformance.
 2. **Intel oneAPI Compiler (`icpx`)**: Optimized frontend for Intel hardware architectures. Executes second to generate optimization reports and register low-noise profiling. *(Note: skipped in Deep Debug mode).*
 3. **LLVM Clang Compiler (`clang++`)**: Executes third. The script is configured to run Clang with error tolerance during linking (`ignore_errors=true`) to gracefully handle ABI compatibility constraints while still capturing Clang's static warnings.

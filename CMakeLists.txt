@@ -7,7 +7,7 @@ set(DIR_NAME template2026)
 #set(CMAKE_CXX_MODULE_STD 1)
 
 project(${DIR_NAME}
-        VERSION 1.2.5
+        VERSION 1.2.6
         DESCRIPTION "${PROJECT_NAME} is a opinionated personal C+++ project template"
         HOMEPAGE_URL "https://github.com/JeffKarling/CPP-new-project-template-2026"
         LANGUAGES CXX
