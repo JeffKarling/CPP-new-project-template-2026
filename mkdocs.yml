@@ -10,10 +10,9 @@ nav:
   - Home: README.md
   - Symmetry Principle Architecture: symmetry_principle.md
   - Dual-Preset Strategy: dual_preset_strategy.md
-  - Low-Noise Profiling: low_noise_profiling.md
+  - Multi-Compiler Setup & Verification: multi_compiler_setup.md
   - Deep Debug Diagnostics: deep_debug_details.md
   - Static Analysis & Clang-Tidy: static_analysis_workflows.md
-  - Multi-Compiler Verification Pipeline: production_artifacts.md
   - Multi-Compiler Debugging & Profiling: profiling_guide.md
 
 markdown_extensions:
