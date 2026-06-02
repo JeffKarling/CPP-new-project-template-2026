@@ -62,7 +62,7 @@ The `build_all.sh` script automates full verification (GNU GCC -> Intel oneAPI -
 ```
 
 ### Manual Individual Workflow Presets
-If you are actively working on a single compiler suite, you can run individual workflows directly via CMake:
+To work on a single compiler suite, run individual workflows directly via CMake:
 
 ```bash
 # Run the complete GNU custom release verification pipeline:

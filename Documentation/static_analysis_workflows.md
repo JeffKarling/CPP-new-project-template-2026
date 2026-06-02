@@ -71,9 +71,9 @@ Stylistic checks that do not impact code execution safety or parallel correctnes
 
 ---
 
-## 4. Developer Elevation and Refactoring Workflow
+## 4. Warning Elevation & Refactoring Workflow
 
-If a developer reviews `clang_tidy_state.md` and decides a Category B or C warning should be addressed, they can elevate it to the active development roadmap using the following automated workflow:
+To elevate a Category B or C warning from `clang_tidy_state.md` to the active development roadmap, use the following automated workflow:
 
 1. Click the file link in `clang_tidy_state.md` to jump directly to the target line in the editor.
 2. Insert an inline comment above the code using the standard `//ATR:` prefix:
