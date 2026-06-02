@@ -37,7 +37,7 @@ Criteria for isolating implementation details into a new target and directory:
 * If the implementation includes a class or function that other targets must reference or link against, the Symmetry Principle requires placing it in its own directory as a separate target. This enforces compilation boundaries and maintains a decoupled dependency graph.
 
 
-### 2. Naming Refactoring (Automated Renaming)
+### 2. Naming Refactoring, Automated Renaming
 If an internal library needs to be renamed during active refactoring, standard projects require changing directory names, modifying target definitions, updating file references, editing parent inclusions, and updating every place where it is linked in the build graph.
 
 In this symmetrical design, renaming a library is automated. Because of dynamic directory-name bindings, renaming the directory automatically renames the target, the source tracking, and the entire build graph. Changing the folder name is the only action required.
@@ -95,7 +95,7 @@ This dynamic override allows the main executable to consume compile option templ
 
 ---
 
-## 4. Modern Source & Header Organization (File Sets)
+## 4. Modern Source & Header Organization, File Sets
 
 The project uses modern C++20 and CMake **File Sets** (introduced in CMake 3.23) for header tracking and separate compilation. Raw list variables or file globbing are avoided:
 
@@ -177,13 +177,13 @@ To ensure a developer experience while guaranteeing portability for the open-sou
 ### The Dual-Preset Strategy
 The project maintains two distinct classes of configurations for compiler toolchains (GNU `g++`, oneAPI `icpx`, and Clang `clang++`):
 
-#### Custom Presets (Development Phase)
+#### Custom Presets, Development Phase
 * **Purpose**: Tailored specifically for active development, local profiling, and hardware optimization.
 * **Compiler Flags**: Includes compiler directives such as:
   * **`-march=native` / `-xhost`**: Directs the compiler to emit instructions specialized for the host machine's active CPU architecture (e.g., AVX2, AVX-512, FMA) to maximize parallel TBB Task Flow Graph and numeric performance.
   * **Warnings & Diagnostics**: Enforces static analysis and warning levels to capture bugs early.
 
-#### Default Presets (Consumer & Open Source Phase)
+#### Default Presets, Consumer & Open Source Phase
 * **Purpose**: Ensures the project remains portable, compliant, and clean for the open-source community.
 * **Compiler Flags**: Sets absolutely no custom compiler flags, relying entirely on CMake's native standard build types.
 
@@ -224,7 +224,7 @@ cmake --workflow --preset GNU_Custom_Debug_Verify
 cmake --workflow --preset OneApi_Custom_Debug_Verify
 ```
 
-### Unified Helper Script (`build_all.sh`)
+### Unified Helper Script, `build_all.sh`
 For convenience, developers execute all three compiler chains sequentially using the helper script:
 ```bash
 # Compile and process all debug configurations:
