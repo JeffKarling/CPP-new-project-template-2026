@@ -13,6 +13,7 @@ This variation introduces a naming translation overhead that developers must tra
 $$\text{Directory Name} == \text{Target Name} == \text{Translation Unit File Name} == \text{Library Object Name}$$
 
 Knowing a folder is named `foo` guarantees that:
+
 * The library target is `foo`.
 * The main source implementation file is `foo.cpp`.
 * The public header file path is `foo/foo.hpp`.
