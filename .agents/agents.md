@@ -61,8 +61,8 @@ The Test Engineer is a specialized role focused on verifying the functional corr
    cmake --workflow --preset OneApi_Custom_RelWithDebInfo_Verify
    ```
 4. Reference materials:
-   - Deep debug diagnostic details: [Documentation/deep_debug_details.md](../Documentation/deep_debug_details.md).
-   - Multi-compiler setup and preset overview: [Documentation/multi_compiler_setup.md](../Documentation/multi_compiler_setup.md).
+   - Deep debug diagnostic details: [Documentation/deep_debug_details.md](../deep_debug_details.md).
+   - Multi-compiler setup and preset overview: [Documentation/multi_compiler_setup.md](../multi_compiler_setup.md).
 
 ---
 
@@ -93,7 +93,7 @@ The Refactoring Specialist is a specialized role focused on enforcing architectu
    ```
 3. Mark completed roadmap items and commit all changes exclusively on the `next` branch.
 4. Reference materials:
-   - Symmetry Principle architecture and target-splitting criteria: [Documentation/symmetry_principle.md](../Documentation/symmetry_principle.md).
+   - Symmetry Principle architecture and target-splitting criteria: [Documentation/symmetry_principle.md](../symmetry_principle.md).
    - CMake coding standards and dynamic target resolution: [.agents/skills/cmake-style-guide.md](skills/cmake-style-guide.md).
    - Refactoring task queue: [.agents/refactoring_roadmap.md](refactoring_roadmap.md).
 
@@ -106,7 +106,7 @@ The Build and Release Specialist is a specialized role focused on maintaining th
 ### Responsibilities
 
 1. CMake Configuration: Maintain [CMakeLists.txt](../CMakeLists.txt) and [CMakePresets.json](../CMakePresets.json) to ensure accurate target registration, dependency resolution, and option flag management. Apply centralized target templates (`targetProperties.cmake` and `targetCompileOptions.cmake`) rather than duplicating compiler options per-target.
-2. Preset Management: Distinguish between custom development presets (machine-specific optimization flags: `-march=native`, `-xhost`, `-ffast-math`, frame pointer preservation, and ITT integration) and default distribution presets (zero-opinion flags for portability). Custom presets are the primary build path; default presets are the secondary portability check. Refer to [Documentation/dual_preset_strategy.md](../Documentation/dual_preset_strategy.md) for the complete strategy.
+2. Preset Management: Distinguish between custom development presets (machine-specific optimization flags: `-march=native`, `-xhost`, `-ffast-math`, frame pointer preservation, and ITT integration) and default distribution presets (zero-opinion flags for portability). Custom presets are the primary build path; default presets are the secondary portability check. Refer to [Documentation/dual_preset_strategy.md](../dual_preset_strategy.md) for the complete strategy.
 3. Static Analysis Management: Run Clang-Tidy analysis using the dedicated preset and update the warning summary:
    ```bash
    cmake --preset Clang_Tidy && cmake --build --preset Clang_Tidy
@@ -135,8 +135,7 @@ The Build and Release Specialist is a specialized role focused on maintaining th
    production_artifacts/clang_tidy_state.md
    ```
 4. Reference materials:
-   - Dual-preset strategy and the double-verification cycle: [Documentation/dual_preset_strategy.md](../Documentation/dual_preset_strategy.md).
-   - Static analysis warning categories and elevation workflow: [Documentation/static_analysis_workflows.md](../Documentation/static_analysis_workflows.md).
-   - Multi-compiler toolchain setup: [Documentation/multi_compiler_setup.md](../Documentation/multi_compiler_setup.md).
+   - Dual-preset strategy and the double-verification cycle: [Documentation/dual_preset_strategy.md](../dual_preset_strategy.md).
+   - Static analysis warning categories and elevation workflow: [Documentation/static_analysis_workflows.md](../static_analysis_workflows.md).
+   - Multi-compiler toolchain setup: [Documentation/multi_compiler_setup.md](../multi_compiler_setup.md).
    - CMake coding standards: [.agents/skills/cmake-style-guide.md](skills/cmake-style-guide.md).
-
