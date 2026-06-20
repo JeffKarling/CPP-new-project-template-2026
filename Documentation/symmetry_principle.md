@@ -143,3 +143,23 @@ While Symmetry Principle provides modularity and refactoring safety, the archite
 * **Template Instantiation and Binary Bloat**:
     * **Criticism**: Segregating targets can cause duplicate template instantiations to be compiled across separate static archive boundaries, increasing final executable size.
     * **Mitigation**: The build system addresses this by enabling Interprocedural Optimization / Link-Time Optimization (`ENABLE_IPO`) in release configurations, allowing the compiler to perform global inlining and strip duplicate symbols during the final linkage phase.
+
+---
+
+## 7. Agent Role, Refactoring Specialist
+
+The Symmetry Principle is the primary architectural domain of the **Refactoring Specialist** agent role. When an agent assumes this role, it must:
+
+- Verify that any newly added source file maps to a directory that does not yet exist. If a matching directory is absent, create it and register it as a standalone CMake target.
+- Apply the target-splitting criterion before writing any new class or function: if the implementation will be consumed by a target other than its own, it must be isolated in a dedicated directory.
+- Execute renames exclusively by renaming the physical directory. Manual edits to `CMakeLists.txt` target names are not required and must not be made.
+- Run the tag parser after every structural modification and mark completed roadmap items:
+  ```bash
+  python3 .agents/parse_tags.py
+  ```
+- Verify the build graph after every rename or split operation:
+  ```bash
+  ./production_artifacts/build_all.sh custom debug
+  ```
+
+For the full role definition, see [.agents/agents.md](../.agents/agents.md).

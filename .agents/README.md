@@ -5,6 +5,8 @@ This directory is the dedicated space for AI agent metadata, planning blueprints
 ## Layout
 
 - [README.md](README.md) - This document.
+- [agents.md](agents.md) - Defined agent roles and responsibilities for developer-agent integration.
+- [human_agent_efficient_workflow.md](human_agent_efficient_workflow.md) - Guide for roles activation, model selection, and multi-model pipeline execution.
 - [refactoring_roadmap.md](refactoring_roadmap.md) - The persistent architectural blueprint and task list for refactoring.
 - [parse_tags.py](parse_tags.py) - Standalone python tool that parses development comments and updates the roadmap.
 
@@ -59,7 +61,7 @@ This script automates the full configure, build, and test pipeline (using workfl
 > **COMPULSORY AGENT RULES**:
 > 1. AI agents MUST automatically update the [refactoring_roadmap.md](refactoring_roadmap.md) file (marking completed items as `[x]`) immediately after any refactoring task has been executed.
 > 2. AI agents MUST always use the CMake preset named `Clang_Tidy` (via `cmake --preset Clang_Tidy && cmake --build --preset Clang_Tidy`) when asked to run clang-tidy checks on the codebase.
-> 3. AI agents MUST by default always use the unified compilation script `build_all.sh` (located at `./production_artifacts/build_all.sh`, e.g. `./production_artifacts/build_all.sh [custom|default] [debug|release]`) to compile and verify code modifications. The agent should reason whether to run in `debug` or `release` mode based on the task requirements and must compare the build/test outputs from each of the three compilers (GNU, oneAPI, Clang) to ensure seamless cross-compatibility and verify that no warnings or regressions are introduced.
+> 3. AI agents MUST primarily compile and verify code modifications using the custom build presets (via `./production_artifacts/build_all.sh custom [debug|release]`) to leverage target-specific hardware optimizations (-march=native, -xhost) and debugging diagnostics. Default presets (via `./production_artifacts/build_all.sh default [debug|release]`) must only be used as a secondary check to confirm consumer and open-source portability. The agent should reason whether to run in `debug` or `release` mode based on the task requirements and must compare the build/test outputs from each of the three compilers (GNU, oneAPI, Clang) to ensure seamless cross-compatibility and verify that no warnings or regressions are introduced.
 > 4. **Refactoring Roadmap Global Queue Workflow**:
 >    - The project uses [refactoring_roadmap.md](refactoring_roadmap.md) as a persistent global state queue containing future refactoring jobs between agent sessions, allowing refactoring jobs to be queued in a file instead of tied to a specific session.
 >    - **Clean Session Startup Mandate**: When entering a clean new chat session, *before performing any user-requested tasks*, the AI agent MUST ask the user one time: *"Should I scan the project for refactoring tags?"*. If the user confirms, the agent MUST run the tag parser script: `python3 .agents/parse_tags.py`.

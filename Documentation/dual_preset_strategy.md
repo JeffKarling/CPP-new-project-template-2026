@@ -81,3 +81,19 @@ Developers execute the unified verification runner script from the workspace roo
 This sequence guarantees that:
 1. Active development optimizations compile, run tests, and generate valid profiling results.
 2. The codebase remains portable, compiling successfully on generic systems that do not support native host-level compiler directives.
+
+---
+
+## 5. Agent Roles, Preset Selection Rules
+
+Two agent roles interact directly with the dual-preset strategy:
+
+**Build and Release Specialist**: Owns the CMake preset configuration in `CMakePresets.json`. Responsible for maintaining flag accuracy in both preset classes. Executes the full double-verification cycle before staging changes on the `next` branch:
+```bash
+./production_artifacts/build_all.sh custom debug
+./production_artifacts/build_all.sh default release
+```
+
+**Performance Engineer**: Consumes exclusively custom presets. Compiles under `OneApi_Custom_RelWithDebInfo` to activate ITT instrumentation (`ENABLE_ITT=ON`), frame pointer preservation, and native hardware instruction emission. Never compiles under default presets for profiling tasks, as the absence of `-march=native` produces binaries that do not reflect the host CPU's actual execution units.
+
+For the full role definitions, see [.agents/agents.md](../.agents/agents.md).

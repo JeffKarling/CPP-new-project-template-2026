@@ -97,3 +97,18 @@ Managed through customized mapping configurations (`iwyu_mappings.imp`), this to
 2. Unnecessary transitive headers are removed.
 
 This optimization keeps compilation dependencies minimal, structured, and compliant with C++ standard practices.
+
+---
+
+## 6. Agent Roles, Static Analysis Workflow
+
+Two agent roles interact with the static analysis pipeline:
+
+**Build and Release Specialist**: Executes the `Clang_Tidy` preset to generate the unified warning summary and classifies findings into Category A, B, or C. Responsible for resolving Category A findings before changes reach the `next` branch. Runs Include-What-You-Use via `ENABLE_IWYU` to enforce dependency minimization.
+
+**Refactoring Specialist**: Consumes the `clang_tidy_state.md` output. Elevates Category B and C items to the active refactoring roadmap by inserting `//ATR:` inline comment tags in source code and running the tag parser:
+```bash
+python3 .agents/parse_tags.py
+```
+
+For the full role definitions, see [.agents/agents.md](../.agents/agents.md).

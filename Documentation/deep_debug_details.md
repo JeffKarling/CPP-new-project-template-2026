@@ -47,3 +47,19 @@ Enforcing dual-verification across both GNU and Clang deep diagnostics is essent
 By testing modifications across both compiler suites:
 1. **Clang Deep Debug** acts as a high-velocity check, capturing bounds and memory index violations while preserving layout compatibility with external dependencies.
 2. **GNU Deep Debug** acts as an aggressive logic verification tool, detecting complex iterator invalidation bugs, container mismatches, and structural STL violations.
+
+---
+
+## 5. Agent Role, Test Engineer
+
+Deep debug compilation is the primary diagnostic workflow of the **Test Engineer** agent role. When an agent assumes this role, it must:
+
+- Run the full deep debug preset path after every code modification that touches container usage, iterator ranges, or memory allocation patterns:
+  ```bash
+  ./production_artifacts/build_all.sh custom deep
+  ```
+- Treat any deep debug assertion failure as a blocking defect. Changes that pass standard debug tests but fail under deep debug must be corrected before reaching the `next` branch.
+- Understand the ABI incompatibility introduced by GCC safe-mode containers: when debugging mixed-linkage issues, check whether both the test executable and all static libraries were compiled under identical diagnostic flag configurations.
+- Cross-validate GTest results across Clang deep debug and GNU deep debug to exploit their complementary detection scopes as outlined in Section 4.
+
+For the full role definition, see [.agents/agents.md](../.agents/agents.md).

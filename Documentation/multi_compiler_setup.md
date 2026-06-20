@@ -84,3 +84,18 @@ The script sequentially invokes the following compiler frontends:
 1. **GNU Compiler Collection (`g++`)**: Acts as the baseline validator. Runs first to ensure standard conformance.
 2. **Intel oneAPI Compiler (`icpx`)**: Optimized frontend for Intel hardware architectures. Executes second to generate optimization reports and register low-noise profiling. *(Note: skipped in Deep Debug mode).*
 3. **LLVM Clang Compiler (`clang++`)**: Executes third. The script is configured to run Clang with error tolerance during linking (`ignore_errors=true`) to gracefully handle ABI compatibility constraints while still capturing Clang's static warnings.
+
+---
+
+## 5. Agent Roles, Multi-Compiler Verification
+
+Two agent roles interact with the multi-compiler verification workflow:
+
+**Build and Release Specialist**: Drives the full verification cycle. Runs `build_all.sh` across both preset classes before every merge to `next`. Responsible for interpreting compiler-specific warnings and classifying them for static analysis review.
+
+**Test Engineer**: Validates the correctness of unit test results across all three compiler toolchains. Compares GTest pass/fail outputs from GNU, oneAPI, and Clang builds to identify standard library divergences or compiler-specific regressions. Uses the deep debug preset path to stress-test iterator safety and bounds checking:
+```bash
+./production_artifacts/build_all.sh custom deep
+```
+
+For the full role definitions, see [.agents/agents.md](../.agents/agents.md).

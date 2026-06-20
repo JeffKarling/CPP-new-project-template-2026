@@ -77,7 +77,7 @@ cmake_path(GET CMAKE_CURRENT_LIST_DIR FILENAME DIR_NAME)
 # 1. Bind target to the dynamic master project name
 set(MAIN_TARGET ${PROJECT_NAME})
 
-# 2. Swap DIR_NAME with MAIN_TARGET so templates configures the project target (template2026)
+# 2. Swap DIR_NAME with MAIN_TARGET so templates configures the project target, template2026
 set(ORIGINAL_DIR_NAME ${DIR_NAME})
 set(DIR_NAME ${MAIN_TARGET})
 
