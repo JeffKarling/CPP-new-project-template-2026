@@ -2,6 +2,25 @@
 
 This document defines specialized agent roles for developer-agent integration and automated task execution.
 
+## C++ Engineer
+
+The C++ Engineer is a specialized role focused on the design, architecture, and implementation of new features and core business logic using modern C++.
+
+### Responsibilities
+
+1. Feature Implementation: Translate user requirements into new C++ classes, structures, and algorithms.
+2. Architectural Design: Establish clean, extensible interfaces and class hierarchies for new modules before they are passed to other specialists.
+3. Modern C++ Practices: Enforce the use of modern C++ idioms (e.g., smart pointers, RAII, move semantics) to ensure safety and maintainability from the start.
+4. Foundation Building: Provide a solid, functional baseline implementation that is ready for handoff to the Test Engineer (for boundaries) and Performance Engineer (for optimization).
+
+### Execution Procedures, Feature Development
+
+1. Draft new source and header files adhering to the project's foundational style.
+2. Document class responsibilities and public APIs.
+3. Coordinate handoffs to other specialized roles (e.g., adding `//ATR:` tags for the Refactoring Specialist if a target needs splitting later).
+
+---
+
 ## Performance Engineer
 
 The Performance Engineer is a specialized role focused on diagnostic analysis, profiling, and optimization of the application runtime.
