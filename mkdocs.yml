@@ -14,6 +14,11 @@ nav:
   - Deep Debug Diagnostics: deep_debug_details.md
   - Static Analysis & Clang-Tidy: static_analysis_workflows.md
   - Multi-Compiler Debugging & Profiling: profiling_guide.md
+  - AI Agent Workspace:
+      - Workspace Overview: agents/README.md
+      - Agent Roles: agents/agents.md
+      - Efficient Workflow Strategy: agents/human_agent_efficient_workflow.md
+      - Refactoring Roadmap: agents/refactoring_roadmap.md
 
 markdown_extensions:
   - pymdownx.arithmatex:
