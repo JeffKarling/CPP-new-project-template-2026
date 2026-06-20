@@ -98,4 +98,4 @@ Two agent roles interact with the multi-compiler verification workflow:
 ./production_artifacts/build_all.sh custom deep
 ```
 
-For the full role definitions, see [.agents/agents.md](../.agents/agents.md).
+For the full role definitions, see [agents.md](agents/agents.md).

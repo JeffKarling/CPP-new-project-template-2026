@@ -162,4 +162,4 @@ The Symmetry Principle is the primary architectural domain of the **Refactoring 
   ./production_artifacts/build_all.sh custom debug
   ```
 
-For the full role definition, see [.agents/agents.md](../.agents/agents.md).
+For the full role definition, see [agents.md](agents/agents.md).

@@ -96,4 +96,4 @@ Two agent roles interact directly with the dual-preset strategy:
 
 **Performance Engineer**: Consumes exclusively custom presets. Compiles under `OneApi_Custom_RelWithDebInfo` to activate ITT instrumentation (`ENABLE_ITT=ON`), frame pointer preservation, and native hardware instruction emission. Never compiles under default presets for profiling tasks, as the absence of `-march=native` produces binaries that do not reflect the host CPU's actual execution units.
 
-For the full role definitions, see [.agents/agents.md](../.agents/agents.md).
+For the full role definitions, see [agents.md](agents/agents.md).

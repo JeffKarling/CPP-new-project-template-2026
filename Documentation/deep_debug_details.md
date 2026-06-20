@@ -62,4 +62,4 @@ Deep debug compilation is the primary diagnostic workflow of the **Test Engineer
 - Understand the ABI incompatibility introduced by GCC safe-mode containers: when debugging mixed-linkage issues, check whether both the test executable and all static libraries were compiled under identical diagnostic flag configurations.
 - Cross-validate GTest results across Clang deep debug and GNU deep debug to exploit their complementary detection scopes as outlined in Section 4.
 
-For the full role definition, see [.agents/agents.md](../.agents/agents.md).
+For the full role definition, see [agents.md](agents/agents.md).

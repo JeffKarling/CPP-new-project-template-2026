@@ -111,4 +111,4 @@ Two agent roles interact with the static analysis pipeline:
 python3 .agents/parse_tags.py
 ```
 
-For the full role definitions, see [.agents/agents.md](../.agents/agents.md).
+For the full role definitions, see [agents.md](agents/agents.md).
