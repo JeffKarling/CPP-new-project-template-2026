@@ -42,7 +42,7 @@ The Test Engineer is a specialized role focused on verifying the functional corr
 1. Unit Test Authoring: Write and maintain Google Test suites under the designated test subdirectories inside each target (e.g., `srcTargets/databaseManager/databaseManagerTEST/`). Test suites must cover singleton behaviour, data correctness under concurrent access, and boundary conditions including empty containers and null inputs.
 2. Deep Debug Verification: Compile and run the test suite under the deep debug presets (`GNU_Custom_Debug_Deep` and `Clang_Custom_Debug_Deep`) to trigger maximum standard library safety assertions. GCC safe-mode iterators expose structural STL violations and container ABI-breaking conditions; Clang hardened libc++ (`_LIBCPP_HARDENING_MODE_EXTENSIVE`) enforces bounds-checking on all hot-path memory accesses.
 3. Cross-Compiler Validation: Verify that all tests pass across all three compiler suites (GNU, Intel oneAPI, and LLVM Clang) using the multi-compiler verification runner. Compare outputs to identify compiler-specific defects, linker behaviour differences, and standard library divergences.
-4. Regression Prevention: Execute the test suite after every code modification to confirm that no regressions are introduced before changes are staged on the `next` branch.
+4. Regression Prevention: Execute the test suite after every code modification to confirm that no regressions are introduced before changes are staged on the active role branch (e.g., `TestEngineer`) or `next`.
 
 ### Execution Procedures, Build and Test Commands
 
@@ -91,7 +91,7 @@ The Refactoring Specialist is a specialized role focused on enforcing architectu
    ```bash
    ./production_artifacts/build_all.sh custom debug
    ```
-3. Mark completed roadmap items and commit all changes exclusively on the `next` branch.
+3. Mark completed roadmap items and commit all changes exclusively on the active role branch (e.g., `RefactoringSpecialist`).
 4. Reference materials:
    - Symmetry Principle architecture and target-splitting criteria: [Documentation/symmetry_principle.md](../symmetry_principle.md).
    - CMake coding standards and dynamic target resolution: [.agents/skills/cmake-style-guide.md](skills/cmake-style-guide.md).
