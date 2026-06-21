@@ -19,6 +19,7 @@ nav:
       - Agent Roles: agents/agents.md
       - Efficient Workflow Strategy: agents/human_agent_efficient_workflow.md
       - Elephant/Goldfish Workflow Variant: agents/elephant_goldfish_workflow.md
+      - Cross-Session State, Extending In-Session Planning: agents/cross_session_state.md
       - Refactoring Roadmap: agents/refactoring_roadmap.md
 
 markdown_extensions:
