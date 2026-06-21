@@ -271,6 +271,8 @@ The Security Engineer is a specialized role focused on identifying, classifying,
 
 ### Reference Materials
 
+- Security vulnerability patterns and CERT rule lookup: [.agents/skills/security-patterns](skills/security-patterns).
+- SEI CERT C++ Coding Standard: https://wiki.sei.cmu.edu/confluence/pages/viewpage.action?pageId=88046682
 - Static analysis warning categories and elevation workflow: [Documentation/static_analysis_workflows.md](../static_analysis_workflows.md).
 - Deep debug diagnostic configurations: [Documentation/deep_debug_details.md](../deep_debug_details.md).
 - Multi-compiler toolchain setup: [Documentation/multi_compiler_setup.md](../multi_compiler_setup.md).
