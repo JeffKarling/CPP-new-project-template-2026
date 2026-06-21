@@ -18,6 +18,7 @@ nav:
       - Workspace Overview: agents/README.md
       - Agent Roles: agents/agents.md
       - Efficient Workflow Strategy: agents/human_agent_efficient_workflow.md
+      - Elephant/Goldfish Workflow Variant: agents/elephant_goldfish_workflow.md
       - Refactoring Roadmap: agents/refactoring_roadmap.md
 
 markdown_extensions:
