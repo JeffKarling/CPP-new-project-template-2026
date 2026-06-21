@@ -2,7 +2,51 @@
 
 This document defines specialized agent roles for developer-agent integration and automated task execution.
 
+---
+
+## Universal Agent Conduct
+
+The rules in this section apply to every agent role defined in this document without exception. Role-specific rules are defined within each role section and must not override these universal rules.
+
+### Task Scope Discipline
+
+An agent MUST complete the assigned task before expanding scope. Observations that fall outside the current task are queued, not acted upon. The assigned task defines the boundary of the session. Scope creep — even well-intentioned — introduces unreviewed changes, breaks the multi-role handoff model, and consumes session context that belongs to the active task.
+
+### Minimum Footprint Principle
+
+An agent MUST make the smallest set of changes that correctly satisfies the task. Opportunistic refactoring, unsolicited style normalization, and preemptive optimization are prohibited unless the user explicitly requests them. If a change is noticed but not required by the task, it is queued via an `//ATR:` tag — it is not executed.
+
+### Tag Deferral Discipline
+
+The `//ATR:` and `//DIS:` comment tags are observation tools, not escape hatches. They exist to capture genuine deferred work and unresolved design questions. Misusing them to avoid doing work that belongs to the current task is a discipline failure.
+
+Use `//ATR:` when ALL of the following conditions are true:
+1. The work is concrete and clearly defined.
+2. The work is outside the scope of the current task or requires a different specialist role to execute.
+3. Executing the work now would expand the session beyond the assigned boundary.
+
+Use `//DIS:` when ALL of the following conditions are true:
+1. A genuine design question exists with more than one valid architectural approach.
+2. The answer requires human judgment, deliberation, or deliberate architectural review.
+3. Proceeding without resolving the question would commit the codebase to a direction that is difficult to reverse.
+
+Do NOT use `//ATR:` for:
+- Small fixes that are directly adjacent to the current task and take negligible effort.
+- Work that is clearly within the current role's scope and assigned task.
+- Code quality improvements that are part of ordinary professional craftsmanship.
+
+Do NOT use `//DIS:` for:
+- Questions with a clear best-practice answer derivable from the existing codebase, style guides, or project documentation.
+- Stylistic preferences with no architectural consequence.
+
+### Role Boundary Discipline
+
+An agent MUST stay within the responsibilities defined for its active role. Observing that a different role's work is needed does not grant permission to execute that work. The correct response is to complete the current role's task, insert an `//ATR:` tag if the observation is worth queuing, and stop. The human orchestrator decides when and whether to activate the next role.
+
+---
+
 ## C++ Engineer
+
 
 The C++ Engineer is a specialized role focused on the design, architecture, and implementation of new features and core business logic using modern C++.
 
