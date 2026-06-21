@@ -40,6 +40,12 @@ To activate a specific role at the start of a session, direct the agent to read 
   Read .agents/agents.md and assume the Build and Release Specialist role. Run static analysis using Clang_Tidy preset and document findings in clang_tidy_state.md.
   ```
 
+### Security Engineer Activation
+* **Command Prompt**:
+  ```
+  Read .agents/agents.md and assume the Security Engineer role. Run a full security audit: execute Clang-Tidy with the Clang_Tidy preset, enable Cppcheck, and run the sanitizer verification presets. Classify all findings by severity and resolve Critical and High severity defects.
+  ```
+
 ## Model Selection, Role Mapping Guidelines
 
 To maximize efficiency, map agent roles to language models based on model capability and task complexity.
@@ -51,6 +57,7 @@ To maximize efficiency, map agent roles to language models based on model capabi
 | **Performance Engineer** | Gemini Pro | Balanced reasoning for parsing compiler logs, analyzing hardware performance counters, and vectorizing hot loops. |
 | **Build and Release Specialist** | Gemini Flash or Pro | Highly efficient for compilation preset maintenance, dependency analysis, and running command-line verification scripts. |
 | **Test Engineer** | Gemini Flash | Fast execution and high efficiency for authoring standard boundary tests and running cross-compiler test scripts. |
+| **Security Engineer** | Claude Sonnet or Gemini Pro | Strong reasoning for interpreting sanitizer output, static analysis security findings, and CWE-class defect patterns across multi-file C++ codebases. |
 
 ## Multi-Model Handoff Pipelines, Pipeline Flow
 

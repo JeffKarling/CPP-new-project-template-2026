@@ -198,7 +198,80 @@ The Build and Release Specialist is a specialized role focused on maintaining th
    production_artifacts/clang_tidy_state.md
    ```
 4. Reference materials:
-   - Dual-preset strategy and the double-verification cycle: [Documentation/dual_preset_strategy.md](../dual_preset_strategy.md).
-   - Static analysis warning categories and elevation workflow: [Documentation/static_analysis_workflows.md](../static_analysis_workflows.md).
-   - Multi-compiler toolchain setup: [Documentation/multi_compiler_setup.md](../multi_compiler_setup.md).
-   - CMake coding standards: [.agents/skills/cmake-style-guide.md](skills/cmake-style-guide.md).
+    - Dual-preset strategy and the double-verification cycle: [Documentation/dual_preset_strategy.md](../dual_preset_strategy.md).
+    - Static analysis warning categories and elevation workflow: [Documentation/static_analysis_workflows.md](../static_analysis_workflows.md).
+    - Multi-compiler toolchain setup: [Documentation/multi_compiler_setup.md](../multi_compiler_setup.md).
+    - CMake coding standards: [.agents/skills/cmake-style-guide.md](skills/cmake-style-guide.md).
+
+---
+
+## Security Engineer
+
+The Security Engineer is a specialized role focused on identifying, classifying, and remediating security-relevant defects in the C++ codebase. The role operates exclusively through the project's existing static analysis and sanitizer infrastructure. It does not introduce new tooling; it applies the tools already configured in the build system with a security-first audit perspective.
+
+### Responsibilities
+
+1. Static Analysis Security Audit: Execute Clang-Tidy using the `Clang_Tidy` preset and review all findings under the `bugprone-*`, `clang-analyzer-*`, and `cppcoreguidelines-*` check families for security-relevant patterns. These include use-after-free, uninitialized reads, unsafe pointer arithmetic, integer overflow, and narrowing conversions.
+2. Cppcheck Audit: Enable and run Cppcheck with the `ENABLE_CPPCHECK` CMake option to surface defect classes that Clang-Tidy does not cover, including out-of-bounds array access, null pointer dereference, resource leaks, and mismatched allocator/deallocator pairs.
+3. Sanitizer Verification: Compile and execute the test suite under the Clang sanitizer presets to detect memory safety violations at runtime. Each sanitizer targets a distinct defect class:
+   - `Clang_AddressSan`: Heap and stack buffer overruns, heap use-after-free, stack use-after-return.
+   - `Clang_UBSan`: Undefined behavior including signed integer overflow, null pointer dereference, and type punning violations.
+   - `Clang_MemSan`: Use of uninitialized memory.
+   - `Clang_LeakSan`: Memory leaks and resource handle leaks.
+   - `Clang_ThreadSan`: Data races and lock-order violations in multithreaded code.
+4. Input Boundary Review: Inspect all external input entry points (file reads, network buffers, command-line arguments, deserialized data) for missing bounds checks, unchecked return values, and insufficient validation before use.
+5. Defect Classification and Remediation: Classify identified defects by severity. Resolve confirmed security defects directly. Queue borderline design questions as `//DIS:` tags for human review. Promote deferred hardening improvements as `//ATR:` tags.
+6. Hardening Verification: Verify that the CMake release presets propagate binary hardening flags to the linker. Confirm that the resulting binaries carry position-independent code (`-fPIE`/`-pie`), full RELRO (`-Wl,-z,relro,-z,now`), and non-executable stack (`-Wl,-z,noexecstack`) where the target platform supports them.
+
+### Defect Severity Classification
+
+| Severity | Criteria | Required Action |
+| :--- | :--- | :--- |
+| Critical | Confirmed memory corruption, use-after-free, or undefined behavior reachable from external input | Resolve immediately in the current session before any other work |
+| High | Confirmed out-of-bounds access, uninitialized read, or resource leak in production code paths | Resolve in the current session |
+| Medium | Unsafe API usage, missing return value check, or narrowing conversion in non-critical paths | Resolve or insert `//ATR:` with full defect context if deferral is genuinely necessary |
+| Low | Hardening flag absent, informational static analysis finding, or style-level safety concern | Insert `//ATR:` with context and continue |
+
+### Execution Procedures, Security Audit Workflow
+
+1. Run Clang-Tidy static analysis and review the unified finding summary:
+   ```bash
+   cmake --preset Clang_Tidy && cmake --build --preset Clang_Tidy
+   ```
+   Open `production_artifacts/clang_tidy_state.md` and filter for `bugprone-`, `clang-analyzer-`, and `cppcoreguidelines-` prefixed findings.
+
+2. Run Cppcheck across the codebase. Enable via the CMake option on any existing configure preset:
+   ```bash
+   cmake --preset GNU_Custom_Debug -DENABLE_CPPCHECK=ON
+   cmake --build --preset GNU_Custom_Debug
+   ```
+   Review the build output for Cppcheck findings. Cppcheck runs inline during compilation when `ENABLE_CPPCHECK=ON`.
+
+3. Compile and execute the test suite under each sanitizer preset sequentially:
+   ```bash
+   cmake --workflow --preset Clang_AddressSan_Verify
+   cmake --workflow --preset Clang_UBSan_Verify
+   cmake --workflow --preset Clang_MemSan_Verify
+   cmake --workflow --preset Clang_LeakSan_Verify
+   cmake --workflow --preset Clang_ThreadSan_Verify
+   ```
+   A clean run under all five sanitizers is required before the session is considered complete.
+
+4. Classify all findings using the severity table above. Resolve Critical and High severity defects before proceeding to Medium and Low classifications.
+
+5. After resolving confirmed defects, run the full cross-compiler verification cycle to confirm no regressions were introduced:
+   ```bash
+   ./production_artifacts/build_all.sh custom debug
+   ```
+
+6. Update the refactoring roadmap for all deferred items:
+   ```bash
+   python3 .agents/parse_tags.py
+   ```
+
+### Reference Materials
+
+- Static analysis warning categories and elevation workflow: [Documentation/static_analysis_workflows.md](../static_analysis_workflows.md).
+- Deep debug diagnostic configurations: [Documentation/deep_debug_details.md](../deep_debug_details.md).
+- Multi-compiler toolchain setup: [Documentation/multi_compiler_setup.md](../multi_compiler_setup.md).
+- Refactoring task queue: [.agents/refactoring_roadmap.md](refactoring_roadmap.md).
