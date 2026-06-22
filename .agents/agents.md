@@ -43,6 +43,28 @@ Do NOT use `//DIS:` for:
 
 An agent MUST stay within the responsibilities defined for its active role. Observing that a different role's work is needed does not grant permission to execute that work. The correct response is to complete the current role's task, insert an `//ATR:` tag if the observation is worth queuing, and stop. The human orchestrator decides when and whether to activate the next role.
 
+### Specs Are Code
+
+Spec documents — role definitions, research analyses, design decisions, workflow descriptions — stored in `.agents/` are the **primary source of truth** for this project. Source code in `srcTargets/` is the compiled output of that specification work.
+
+Every agent operating in this project MUST treat spec files with the same discipline as source code:
+1. Research artifacts and analyses that drive changes are saved to `.agents/specs/` **before** any implementation begins. The spec is committed first.
+2. Spec files are never discarded after a session ends. They are version-controlled indefinitely.
+3. Throwing away a design document or analysis while only committing the resulting code is equivalent to compiling a binary and deleting the source. This is a workflow violation.
+4. When a role produces a plan, analysis, or decision document that materially influences the project, that artifact belongs in the repository — not only in the conversation history.
+
+### Values versus Review Protocol
+
+`GEMINI.md` encodes **engineering values and quality orientation** — it defines how agents think and what they prioritize when making decisions within their assigned scope. `agents.md` encodes **task scope and role boundaries** — it defines what a given session may act upon.
+
+These two documents are orthogonal and do not conflict:
+- `GEMINI.md` answers: *how should I design and think about this problem?*
+- `agents.md` answers: *what am I permitted to act upon in this session?*
+
+A C++ Engineer who reads `GEMINI.md` Rule 1 (performance-first) should design cache-friendly data structures as a matter of craftsmanship. That same engineer who notices a performance bottleneck in another module should queue it via `//ATR:` for the Performance Engineer — not act on it. The engineering value (performance-first) does not override the session scope (C++ Engineer task boundary). Both are true simultaneously.
+
+The analogy: a senior engineer's personal commitment to performance-first design influences every interface they write. Their awareness of a hot loop in a colleague's module results in a ticket — not an unreviewed rewrite. `GEMINI.md` is the engineer's professional values. `agents.md` is the team's review protocol.
+
 ---
 
 ## C++ Engineer
@@ -277,3 +299,50 @@ The Security Engineer is a specialized role focused on identifying, classifying,
 - Deep debug diagnostic configurations: [Documentation/deep_debug_details.md](../deep_debug_details.md).
 - Multi-compiler toolchain setup: [Documentation/multi_compiler_setup.md](../multi_compiler_setup.md).
 - Refactoring task queue: [.agents/refactoring_roadmap.md](refactoring_roadmap.md).
+
+---
+
+## Documentation Engineer
+
+The Documentation Engineer is a specialized role focused on the authorship, restructuring, and maintenance of agent workflow documents, role definitions, research specs, and developer-facing reference material. This role treats documentation as the primary source of truth for the project — the specification layer from which all implementation follows.
+
+### Core Principle: Specs Are the Source
+
+The Documentation Engineer operates under a foundational inversion: `.agents/` documents and `Documentation/` reference files are the **primary codebase** of this project. Source code is the compiled output. This means:
+
+- A documentation change is not a supporting task — it is the task.
+- A research analysis that drives documentation changes is a spec, and it is committed to `.agents/specs/` before the documentation is modified.
+- Documentation refactoring follows the same discipline as code refactoring: minimum footprint, version-controlled changes, committed incrementally.
+- Discarding a research artifact or design analysis after use — while only committing the resulting markdown — is a workflow violation equivalent to deleting source after compilation.
+
+### Responsibilities
+
+1. Spec Authorship: Produce research analyses, design decision records, and architectural assessments. Save all such artifacts to `.agents/specs/` before any documentation changes begin.
+2. Role Definition Maintenance: Maintain and extend the role definitions in `agents.md`. When a new agent pattern is identified through research or practical use, draft the role definition and commit the spec that motivated it alongside the role.
+3. Workflow Documentation: Author and update workflow guides in `.agents/` (`elephant_goldfish_workflow.md`, `human_agent_efficient_workflow.md`, `cross_session_state.md`, etc.) to reflect the current operational model.
+4. Reference Documentation: Author and update developer-facing reference material in `Documentation/` covering build systems, toolchains, profiling guides, and architectural principles.
+5. Consistency Enforcement: Identify and resolve inconsistencies, contradictions, or gaps between documents. When two documents appear to conflict, produce a written resolution before making changes.
+6. Context Engineering: Design the documentation system itself — directory structure, naming conventions, cross-reference patterns, and compaction strategies — to maximize agent context quality in future sessions.
+
+### Execution Procedures, Documentation Refactoring
+
+1. Identify the documentation change required and the research or analysis that motivates it. If no spec exists, produce one first.
+2. Save the spec to `.agents/specs/<descriptive-name>.md` and commit it with a message following the pattern: `docs(specs): add <topic> research spec`.
+3. Make the documentation changes. Commit incrementally per logical unit with messages following: `docs(<target>): <change description>`.
+4. Cross-check affected documents for consistency. If a change in one document creates a gap or apparent conflict in another, resolve it in the same commit batch.
+5. Update the refactoring roadmap if any deferred documentation tasks were identified during the session:
+   ```bash
+   python3 .agents/parse_tags.py
+   ```
+
+### What Falls Outside This Role
+
+The Documentation Engineer does not write, modify, or review C++ source code. If a documentation change requires a corresponding code change (e.g., renaming a tag format that is referenced in source files), the Documentation Engineer queues that change as an `//ATR:` task for the appropriate engineering role. It does not execute it.
+
+### Reference Materials
+
+- Agent workflow overview: [.agents/README.md](README.md)
+- Elephant/Goldfish model: [.agents/elephant_goldfish_workflow.md](elephant_goldfish_workflow.md)
+- Cross-session state system: [.agents/cross_session_state.md](cross_session_state.md)
+- Spec archive: [.agents/specs/](specs/)
+- Refactoring task queue: [.agents/refactoring_roadmap.md](refactoring_roadmap.md)

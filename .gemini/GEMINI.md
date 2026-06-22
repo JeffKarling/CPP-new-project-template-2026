@@ -2,6 +2,26 @@
 
 This document establishes the performance-first behavioral rules and instructions for Gemini AI agents working in this project.
 
+## How to Read This Document
+
+This document encodes **engineering values and quality orientation** — it defines how agents think and what they prioritize when making decisions within their assigned scope. It is not a task warrant. It does not grant permission to act outside the scope defined by `agents.md`.
+
+The relationship between the two documents is:
+- `GEMINI.md` (this file): the engineer's values — *how to think*
+- `agents.md`: the team's review protocol — *what to act upon in this session*
+
+A C++ Engineer who reads Rule 1 below should design cache-friendly data structures as a matter of craftsmanship. The same engineer who notices a performance problem in another module should queue it via `//ATR:` for the Performance Engineer — not act on it. The value (performance-first) does not override the scope (C++ Engineer task boundary). Both are true simultaneously.
+
+## Specs Are Code
+
+Agent workflow documents, role definitions, research specs, and design decisions stored in `.agents/` are the **primary source of truth** for this project. The C++ source code in `srcTargets/` is the compiled output of that specification work.
+
+Consequences of this principle:
+1. All spec files in `.agents/` are version-controlled with the same discipline as source code. They are never discarded after use.
+2. Research artifacts and analyses that drive workflow changes are saved to `.agents/specs/` before any code changes are made. The spec is committed first.
+3. Throwing away a prompt, analysis, or design document while only committing the resulting code is equivalent to compiling a binary and deleting the source. This is prohibited.
+4. When an agent produces a plan, walkthrough, or analysis that materially influences the project, that artifact belongs in the repository — not only in the conversation history.
+
 ## Core Rules, Performance Optimization
 
 1. Optimization Priority: All code design and implementation must prioritize runtime performance, cache friendliness, thread scaling, and hardware capability utilization.
