@@ -22,7 +22,7 @@ target_compile_definitions(${DIR_NAME} PRIVATE
         #https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2024/p3191r0.pdf
         $<$<CONFIG:Clang_RelWithDebInfo>:_LIBCPP_HARDENING_MODE=_LIBCPP_HARDENING_MODE_NONE>
 
-        $<$<CONFIG:Clang_tidy>:NDEBUG>
+        $<$<CONFIG:Clang_Tidy>:NDEBUG>
 
         $<$<CONFIG:Clang_UBSan>:NDEBUG>
         $<$<CONFIG:Clang_MemSan>:NDEBUG>
@@ -57,23 +57,23 @@ target_compile_options(${DIR_NAME} PRIVATE
         -Wexit-time-destructors -Wglobal-constructors -Wpessimizing-move -Wrange-loop-construct -Wpadded-bitfield>
         $<$<CONFIG:Clang_RelWithDebInfo>:-march=native -O3 -ffast-math -ggdb -gdwarf-5 -gline-tables-only -fdebug-info-for-profiling>
 
-        $<$<CONFIG:Clang_tidy>:-march=native -O2 -g>
+        $<$<CONFIG:Clang_Tidy>:-march=native -O2 -g>
 
         # Sanitizers https://www.intel.com/content/www/us/en/docs/dpcpp-cpp-compiler/developer-guide-reference/2025-2/host-side-compiler-sanitizers.html
         $<$<CONFIG:Clang_UBSan>:-march=native -O2 -ggdb -gdwarf-5 -fsanitize=undefined -fno-sanitize-recover=undefined -fno-omit-frame-pointer -fno-optimize-sibling-calls>
-        $<$<CONFIG:Clang_MemSan>:-march=native -O2 -g -fno-omit-frame-pointer -fno-optimize-sibling-calls>
-        $<$<CONFIG:Clang_ThreadSan>:-march=native -O2 -g -fno-omit-frame-pointer -fno-optimize-sibling-calls>
+        $<$<CONFIG:Clang_MemSan>:-march=native -O2 -g -fsanitize=memory -fsanitize-memory-track-origins=2 -fno-omit-frame-pointer -fno-optimize-sibling-calls>
+        $<$<CONFIG:Clang_ThreadSan>:-march=native -O2 -g -fsanitize=thread -fno-omit-frame-pointer -fno-optimize-sibling-calls>
         $<$<CONFIG:Clang_AddressSan>:-march=native -O2 -g -fsanitize=address -fno-omit-frame-pointer -fno-optimize-sibling-calls>
-        $<$<CONFIG:Clang_LeakSan>:-march=native -O2 -g -fno-omit-frame-pointer -fno-optimize-sibling-calls>
+        $<$<CONFIG:Clang_LeakSan>:-march=native -O2 -g -fsanitize=leak -fPIE -fno-omit-frame-pointer -fno-optimize-sibling-calls>
 
         #GNU custom builds options
         $<$<CONFIG:GNU_Release>:-march=native -O3 -ffast-math>
         $<$<CONFIG:GNU_Debug>:-march=native -O1 -ggdb -gdwarf-5 -fno-omit-frame-pointer -fno-optimize-sibling-calls
-        -Wall -Wextra -Wshadow -Wconversion -Wformat=2 -Wduplicated-cond -Wstringop-overflow -Wformat-security
+        -Wall -Wextra -Wpedantic -Wshadow -Wconversion -Wformat=2 -Wduplicated-cond -Wstringop-overflow -Wformat-security
         -Wfloat-equal -Wlogical-not-parentheses -Wnull-dereference
         -Wpessimizing-move -Wrange-loop-construct>
         $<$<CONFIG:GNU_Debug_Deep>:-march=native -O0 -ggdb -gdwarf-5 -fno-omit-frame-pointer -fno-optimize-sibling-calls
-        -Wall -Wextra -Wshadow -Wconversion -Wformat=2 -Wduplicated-cond -Wstringop-overflow -Wformat-security
+        -Wall -Wextra -Wpedantic -Wshadow -Wconversion -Wformat=2 -Wduplicated-cond -Wstringop-overflow -Wformat-security
         -Wfloat-equal -Wlogical-not-parentheses -Wnull-dereference
         -Wpessimizing-move -Wrange-loop-construct>
         $<$<CONFIG:GNU_RelWithDebInfo>:-march=native -O2 -g>
@@ -105,16 +105,16 @@ target_link_options(${DIR_NAME} PRIVATE
 
         #OneApi DPC++ link-options
         $<$<CXX_COMPILER_ID:IntelLLVM>:>
-        $<$<CONFIG:Clang_Debug>:>
-        $<$<CONFIG:Clang_Release>:>
-        $<$<CONFIG:Clang_RelWithDebInfo>:>
+        $<$<CONFIG:OneApi_Debug>:>
+        $<$<CONFIG:OneApi_Release>:>
+        $<$<CONFIG:OneApi_RelWithDebInfo>:>
 
         #Sanitizers
-        $<$<CONFIG:Clang_UBSan>:-fsanitize=undefined -fsanitize-trap=all>
+        $<$<CONFIG:Clang_UBSan>:-fsanitize=undefined -fno-sanitize-recover=undefined>
         $<$<CONFIG:Clang_MemSan>:-fsanitize=memory -fsanitize-memory-track-origins=2>
         $<$<CONFIG:Clang_ThreadSan>:-fsanitize=thread -pie >
         $<$<CONFIG:Clang_AddressSan>:-fsanitize=address>
-        $<$<CONFIG:Clang_LeakSan>:-fsanitize=leak -fPIE>
+        $<$<CONFIG:Clang_LeakSan>:-fsanitize=leak -pie>
         $<$<CONFIG:GNU_UBSan>:-fsanitize=undefined>
         $<$<CONFIG:GNU_AddressSan>:-fsanitize=address>
 )

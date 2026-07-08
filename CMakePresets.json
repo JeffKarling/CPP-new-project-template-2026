@@ -715,7 +715,7 @@
       "displayName": "GNU Custom AddressSanitizer - Full Verification",
       "steps": [
         { "type": "configure", "name": "GNU_Custom_AddressSan" },
-        { "type": "build", "name": "GNU_Custom_AddressSanitizer" }
+        { "type": "build", "name": "GNU_Custom_AddressSan" }
       ]
     }
   ]
