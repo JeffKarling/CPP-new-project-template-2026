@@ -14,7 +14,8 @@ nav:
   - Deep Debug Diagnostics: deep_debug_details.md
   - Sanitizer Usage Guide: sanitizer_guide.md
   - Static Analysis & Clang-Tidy: static_analysis_workflows.md
-  - Multi-Compiler Debugging & Profiling: profiling_guide.md
+  - Linux perf Profiling & Hardware Counters: profiling_guide.md
+  - Intel VTune & Advisor Integration: profiling_guide.md
   - AI Agent Workspace:
       - Workspace Overview: agents/README.md
       - Agent Roles: agents/agents.md
