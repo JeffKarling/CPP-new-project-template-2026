@@ -324,13 +324,25 @@ The Documentation Engineer operates under a foundational inversion: `.agents/` d
 5. Consistency Enforcement: Identify and resolve inconsistencies, contradictions, or gaps between documents. When two documents appear to conflict, produce a written resolution before making changes.
 6. Context Engineering: Design the documentation system itself — directory structure, naming conventions, cross-reference patterns, and compaction strategies — to maximize agent context quality in future sessions.
 
+### ⚠ Dual README Awareness
+
+This project maintains **two independent README files** that must always be kept in sync:
+
+| File | Purpose |
+| :--- | :--- |
+| [`.github/README.md`](../.github/README.md) | Rendered by GitHub on the **repository front page** (`github.com/JeffKarling/CPP-new-project-template-2026`). Links use `../Documentation/` relative paths. |
+| [`Documentation/README.md`](../Documentation/README.md) | Source for the **MkDocs documentation site** (`docs_dir: Documentation` in `mkdocs.yml`). Links use bare filenames relative to `Documentation/`. |
+
+**Rule:** Any time a new section, bullet point, or architectural feature is added to one README, the identical entry must be added to the other in the **same commit**. Failing to do so causes the GitHub repository front page to silently fall out of sync with the documentation site, with no automated warning.
+
 ### Execution Procedures, Documentation Refactoring
 
 1. Identify the documentation change required and the research or analysis that motivates it. If no spec exists, produce one first.
 2. Save the spec to `.agents/specs/<descriptive-name>.md` and commit it with a message following the pattern: `docs(specs): add <topic> research spec`.
 3. Make the documentation changes. Commit incrementally per logical unit with messages following: `docs(<target>): <change description>`.
-4. Cross-check affected documents for consistency. If a change in one document creates a gap or apparent conflict in another, resolve it in the same commit batch.
-5. Update the refactoring roadmap if any deferred documentation tasks were identified during the session:
+4. **Dual README sync check:** After every content change to either README, verify the other README reflects the same change. Run `git diff HEAD -- .github/README.md Documentation/README.md` to surface any divergence before committing.
+5. Cross-check affected documents for consistency. If a change in one document creates a gap or apparent conflict in another, resolve it in the same commit batch.
+6. Update the refactoring roadmap if any deferred documentation tasks were identified during the session:
    ```bash
    python3 .agents/parse_tags.py
    ```
