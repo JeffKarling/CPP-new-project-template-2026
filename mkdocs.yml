@@ -12,6 +12,7 @@ nav:
   - Dual-Preset Strategy: dual_preset_strategy.md
   - Multi-Compiler Setup & Verification: multi_compiler_setup.md
   - Deep Debug Diagnostics: deep_debug_details.md
+  - Sanitizer Usage Guide: sanitizer_guide.md
   - Static Analysis & Clang-Tidy: static_analysis_workflows.md
   - Multi-Compiler Debugging & Profiling: profiling_guide.md
   - AI Agent Workspace:

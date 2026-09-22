@@ -3,7 +3,7 @@
 **Date**: 2026-07-08
 **Branch**: `next`
 **Tag**: `1.4.7`
-**Files changed**: `doc/dev/1-4-7_analyze.md` (new — this document)
+**Files changed**: `Documentation/dev/1-4-7_analyze.md` (new — this document)
 
 ---
 
@@ -90,6 +90,6 @@ Any future edits to agent documentation belong exclusively in `.agents/`. The
 
 - The `.agents/specs/context_engineering_analysis.md` committed in the 1.4.5 cycle is
   a pre-workflow artifact predating the finalized spec workflow design (`values.md` +
-  `spec.md` in `doc/dev/<feature>/`). It will be relocated in a future cleanup.
+  `spec.md` in `Documentation/dev/<feature>/`). It will be relocated in a future cleanup.
 - The `agents` entry was verified against `.agignore` and `.gitignore` — neither
   excludes the symlink or the `.agents/` directory.
